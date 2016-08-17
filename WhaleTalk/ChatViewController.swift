@@ -9,10 +9,25 @@
 import UIKit
 
 class ChatViewController: UIViewController {
+    
+    private let tableView = UITableView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(tableView)
+        
+        let tableViewConstraints: [NSLayoutConstraint] = [
+            tableView.topAnchor.constraintEqualToAnchor(view.topAnchor),
+            tableView.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor),
+            tableView.trailingAnchor.constraintEqualToAnchor(view.trailingAnchor),
+            tableView.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor)
+        ]
+        
+        NSLayoutConstraint.activateConstraints(tableViewConstraints)
+        
     }
 
     override func didReceiveMemoryWarning() {
