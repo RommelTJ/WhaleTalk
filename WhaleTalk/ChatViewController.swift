@@ -18,6 +18,12 @@ class ChatViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        for i in 0...10 {
+            let m = Message()
+            m.text = String(i)
+            messages.append(m)
+        }
+        
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
         
