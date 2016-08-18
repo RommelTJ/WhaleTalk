@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7749AD6D1D656BB400621027 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7749AD6C1D656BB400621027 /* Message.swift */; };
 		77C659641D62D02200F61AB0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C659631D62D02200F61AB0 /* AppDelegate.swift */; };
 		77C659661D62D02200F61AB0 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C659651D62D02200F61AB0 /* ChatViewController.swift */; };
 		77C659691D62D02200F61AB0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77C659671D62D02200F61AB0 /* Main.storyboard */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7749AD6C1D656BB400621027 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		77C659601D62D02200F61AB0 /* WhaleTalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhaleTalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		77C659631D62D02200F61AB0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		77C659651D62D02200F61AB0 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 			children = (
 				77C659631D62D02200F61AB0 /* AppDelegate.swift */,
 				77C659651D62D02200F61AB0 /* ChatViewController.swift */,
+				7749AD6C1D656BB400621027 /* Message.swift */,
 				77C659671D62D02200F61AB0 /* Main.storyboard */,
 				77C6596A1D62D02200F61AB0 /* Assets.xcassets */,
 				77C6596C1D62D02200F61AB0 /* LaunchScreen.storyboard */,
@@ -135,6 +138,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7749AD6D1D656BB400621027 /* Message.swift in Sources */,
 				77C659661D62D02200F61AB0 /* ChatViewController.swift in Sources */,
 				77C659641D62D02200F61AB0 /* AppDelegate.swift in Sources */,
 			);

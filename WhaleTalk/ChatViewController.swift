@@ -11,7 +11,9 @@ import UIKit
 class ChatViewController: UIViewController {
     
     private let tableView = UITableView()
-
+    private var messages = [Message]()
+    private let cellIdentifier = "Cell"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
