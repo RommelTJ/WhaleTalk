@@ -31,7 +31,7 @@ class ChatCell: UITableViewCell {
         messageLabel.centerYAnchor.constraintEqualToAnchor(bubbleImageView.centerYAnchor).active = true
         //Adding 50 to the width to account for the Speech Bubble's tail.
         bubbleImageView.widthAnchor.constraintEqualToAnchor(messageLabel.widthAnchor, constant: 50).active = true
-        bubbleImageView.heightAnchor.constraintEqualToAnchor(messageLabel.heightAnchor).active = true
+        bubbleImageView.heightAnchor.constraintEqualToAnchor(messageLabel.heightAnchor, constant: 20).active = true
         outgoingConstraints = [
             bubbleImageView.trailingAnchor.constraintEqualToAnchor(contentView.trailingAnchor),
             bubbleImageView.leadingAnchor.constraintGreaterThanOrEqualToAnchor(contentView.centerXAnchor)
