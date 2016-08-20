@@ -188,6 +188,18 @@ extension ChatViewController: UITableViewDataSource {
         paddingView.addSubview(dateLabel)
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         
+        //Constraints
+        let constraints: [NSLayoutConstraint] = [
+            paddingView.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor),
+            paddingView.centerYAnchor.constraintEqualToAnchor(view.centerYAnchor),
+            dateLabel.centerXAnchor.constraintEqualToAnchor(paddingView.centerXAnchor),
+            dateLabel.centerYAnchor.constraintEqualToAnchor(paddingView.centerYAnchor),
+            paddingView.heightAnchor.constraintEqualToAnchor(dateLabel.heightAnchor, constant: 5),
+            paddingView.widthAnchor.constraintEqualToAnchor(dateLabel.widthAnchor, constant: 10),
+            view.heightAnchor.constraintEqualToAnchor(paddingView.heightAnchor)
+        ]
+        NSLayoutConstraint.activateConstraints(constraints)
+        
         return view
     }
 }
