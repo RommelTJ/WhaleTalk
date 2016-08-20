@@ -10,7 +10,7 @@ import UIKit
 
 class ChatViewController: UIViewController {
     
-    private let tableView = UITableView()
+    private let tableView = UITableView(frame: CGRectZero, style: .Grouped)
     private let newMessageField = UITextView()
     private var sections = [NSDate: [Message]]()
     private var dates = [NSDate]()
