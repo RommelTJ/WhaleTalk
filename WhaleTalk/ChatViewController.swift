@@ -21,13 +21,18 @@ class ChatViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
         var localIncoming = true
+        var date = NSDate(timeIntervalSince1970: 1100000000)
         
         for i in 0...10 {
             let m = Message()
             m.text = "This is a longer message. How does it look?"
+            m.timestamp = date
             m.incoming = localIncoming
             localIncoming = !localIncoming
             messages.append(m)
+            if i%2==0 {
+                date = NSDate(timeInterval: 60*60*24, sinceDate: date)
+            }
         }
         
         //Message Area
