@@ -200,6 +200,13 @@ extension ChatViewController: UITableViewDataSource {
         ]
         NSLayoutConstraint.activateConstraints(constraints)
         
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "MMM dd, YYYY"
+        dateLabel.text = formatter.stringFromDate(dates[section])
+        paddingView.layer.cornerRadius = 10
+        paddingView.layer.masksToBounds = true
+        paddingView.backgroundColor = UIColor(red: 153/255, green: 204/255, blue: 255/255, alpha: 1.0)
+        
         return view
     }
 }
