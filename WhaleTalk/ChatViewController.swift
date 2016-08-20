@@ -12,7 +12,8 @@ class ChatViewController: UIViewController {
     
     private let tableView = UITableView()
     private let newMessageField = UITextView()
-    private var messages = [Message]()
+    private var sections = [NSDate: [Message]]()
+    private var dates = [NSDate]()
     private var bottomConstraint: NSLayoutConstraint!
     private let cellIdentifier = "Cell"
     
