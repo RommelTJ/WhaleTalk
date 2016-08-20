@@ -28,6 +28,20 @@ class ChatViewController: UIViewController {
             messages.append(m)
         }
         
+        //Message Area
+        let newMessageArea = UIView()
+        newMessageArea.backgroundColor = UIColor.lightGrayColor()
+        newMessageArea.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(newMessageArea)
+        //Message Area constraints
+        let messageAreaConstraints: [NSLayoutConstraint] = [
+            newMessageArea.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor),
+            newMessageArea.trailingAnchor.constraintEqualToAnchor(view.trailingAnchor),
+            newMessageArea.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor),
+            newMessageArea.heightAnchor.constraintEqualToConstant(50)
+        ]
+        NSLayoutConstraint.activateConstraints(messageAreaConstraints)
+        
         tableView.registerClass(ChatCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.dataSource = self
         tableView.delegate = self
@@ -40,7 +54,7 @@ class ChatViewController: UIViewController {
             tableView.topAnchor.constraintEqualToAnchor(view.topAnchor),
             tableView.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor),
             tableView.trailingAnchor.constraintEqualToAnchor(view.trailingAnchor),
-            tableView.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor)
+            tableView.bottomAnchor.constraintEqualToAnchor(newMessageArea.topAnchor)
         ]
         
         NSLayoutConstraint.activateConstraints(tableViewConstraints)
