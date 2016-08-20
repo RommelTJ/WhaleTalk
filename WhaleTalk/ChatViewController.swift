@@ -121,8 +121,10 @@ class ChatViewController: UIViewController {
         message.text = text
         message.incoming = false
         messages.append(message)
+        newMessageField.text = ""
         tableView.reloadData()
         tableView.scrollToBottom()
+        view.endEditing(true)
     }
 
 }
