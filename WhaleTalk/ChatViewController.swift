@@ -74,8 +74,11 @@ class ChatViewController: UIViewController {
         ]
         NSLayoutConstraint.activateConstraints(tableViewConstraints)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: Selector("handleSingleTap:"))
+        tapRecognizer.numberOfTapsRequired = 1
+        view.addGestureRecognizer(tapRecognizer)
     }
 
     override func didReceiveMemoryWarning() {
@@ -91,7 +94,10 @@ class ChatViewController: UIViewController {
                     self.view.layoutIfNeeded()
                 })
         }
-        
+    }
+    
+    func handleSingleTap(recognizer: UITapGestureRecognizer) {
+        view.endEditing(true)
     }
 
 }
