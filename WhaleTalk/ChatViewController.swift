@@ -13,6 +13,7 @@ class ChatViewController: UIViewController {
     private let tableView = UITableView()
     private let newMessageField = UITextView()
     private var messages = [Message]()
+    private var bottomConstraint: NSLayoutConstraint!
     private let cellIdentifier = "Cell"
     
     override func viewDidLoad() {
@@ -42,11 +43,12 @@ class ChatViewController: UIViewController {
         newMessageArea.addSubview(sendButton)
         sendButton.setTitle("Send", forState: .Normal)
         sendButton.setContentHuggingPriority(255, forAxis: .Horizontal)
+        bottomConstraint = newMessageArea.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor)
+        bottomConstraint.active = true
         //Message Area constraints
         let messageAreaConstraints: [NSLayoutConstraint] = [
             newMessageArea.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor),
             newMessageArea.trailingAnchor.constraintEqualToAnchor(view.trailingAnchor),
-            newMessageArea.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor),
             newMessageField.leadingAnchor.constraintEqualToAnchor(newMessageArea.leadingAnchor, constant: 10),
             newMessageField.centerYAnchor.constraintEqualToAnchor(newMessageArea.centerYAnchor),
             sendButton.trailingAnchor.constraintEqualToAnchor(newMessageArea.trailingAnchor, constant: -10),
