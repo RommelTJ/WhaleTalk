@@ -30,6 +30,7 @@ class ChatViewController: UIViewController {
         
         tableView.registerClass(ChatCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.dataSource = self
+        tableView.delegate = self
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
