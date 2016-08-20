@@ -47,6 +47,7 @@ class ChatViewController: UIViewController {
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         newMessageArea.addSubview(sendButton)
         sendButton.setTitle("Send", forState: .Normal)
+        sendButton.addTarget(self, action: #selector(ChatViewController.pressedSend(_:)), forControlEvents: .TouchUpInside)
         sendButton.setContentHuggingPriority(255, forAxis: .Horizontal)
         sendButton.setContentCompressionResistancePriority(751, forAxis: .Horizontal)
         bottomConstraint = newMessageArea.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor)
@@ -87,6 +88,10 @@ class ChatViewController: UIViewController {
         tapRecognizer.numberOfTapsRequired = 1
         view.addGestureRecognizer(tapRecognizer)
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        tableView.scrollToBottom()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -112,6 +117,7 @@ class ChatViewController: UIViewController {
             UIView.animateWithDuration(animationDuration, animations: {
                 self.view.layoutIfNeeded()
             })
+            tableView.scrollToBottom()
         }
     }
     
