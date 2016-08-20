@@ -158,15 +158,21 @@ extension ChatViewController: UITableViewDataSource {
         return sections[date]!
     }
     
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return dates.count
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messages.count
+        return getMessages(section).count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! ChatCell
+        let messages = getMessages(indexPath.section)
         let message = messages[indexPath.row]
         cell.messageLabel.text = message.text
         cell.incoming(message.incoming)
+        cell.backgroundColor = UIColor.clearColor()
         cell.separatorInset = UIEdgeInsetsMake(0, tableView.bounds.size.width, 0, 0)
         return cell
     }
