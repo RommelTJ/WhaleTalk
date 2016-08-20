@@ -112,6 +112,7 @@ class ChatViewController: UIViewController {
             UIView.animateWithDuration(animationDuration, animations: {
                 self.view.layoutIfNeeded()
             })
+            tableView.scrollToBottom()
         }
     }
     
