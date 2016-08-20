@@ -122,7 +122,7 @@ class ChatViewController: UIViewController {
         message.incoming = false
         messages.append(message)
         tableView.reloadData()
-        tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: (tableView.numberOfRowsInSection(0)-1), inSection: 0), atScrollPosition: .Bottom, animated: true)
+        tableView.scrollToBottom()
     }
 
 }
