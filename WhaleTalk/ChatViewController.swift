@@ -11,6 +11,7 @@ import UIKit
 class ChatViewController: UIViewController {
     
     private let tableView = UITableView()
+    private let newMessageField = UITextView()
     private var messages = [Message]()
     private let cellIdentifier = "Cell"
     
@@ -33,6 +34,14 @@ class ChatViewController: UIViewController {
         newMessageArea.backgroundColor = UIColor.lightGrayColor()
         newMessageArea.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(newMessageArea)
+        newMessageField.translatesAutoresizingMaskIntoConstraints = false
+        newMessageArea.addSubview(newMessageField)
+        newMessageField.scrollEnabled = false
+        let sendButton = UIButton()
+        sendButton.translatesAutoresizingMaskIntoConstraints = false
+        newMessageArea.addSubview(sendButton)
+        sendButton.setTitle("Send", forState: .Normal)
+        sendButton.setContentHuggingPriority(255, forAxis: .Horizontal)
         //Message Area constraints
         let messageAreaConstraints: [NSLayoutConstraint] = [
             newMessageArea.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor),
