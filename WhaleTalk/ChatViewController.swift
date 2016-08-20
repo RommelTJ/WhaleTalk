@@ -43,6 +43,7 @@ class ChatViewController: UIViewController {
         newMessageArea.addSubview(sendButton)
         sendButton.setTitle("Send", forState: .Normal)
         sendButton.setContentHuggingPriority(255, forAxis: .Horizontal)
+        sendButton.setContentCompressionResistancePriority(751, forAxis: .Horizontal)
         bottomConstraint = newMessageArea.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor)
         bottomConstraint.active = true
         //Message Area constraints
