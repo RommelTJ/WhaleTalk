@@ -209,6 +209,14 @@ extension ChatViewController: UITableViewDataSource {
         
         return view
     }
+    
+    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
+    }
+    
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0.01
+    }
 }
 
 extension ChatViewController: UITableViewDelegate {
