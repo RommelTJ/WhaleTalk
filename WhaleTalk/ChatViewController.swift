@@ -109,6 +109,14 @@ class ChatViewController: UIViewController {
             })
         }
     }
+    
+    func pressedSend(button: UIButton) {
+        guard let text = newMessageField.text where text.characters.count > 0 else { return }
+        let message = Message()
+        message.text = text
+        message.incoming = false
+        messages.append(message)
+    }
 
 }
 
