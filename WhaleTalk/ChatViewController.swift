@@ -75,8 +75,9 @@ class ChatViewController: UIViewController {
         NSLayoutConstraint.activateConstraints(tableViewConstraints)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
         
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: Selector("handleSingleTap:"))
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(ChatViewController.handleSingleTap(_:)))
         tapRecognizer.numberOfTapsRequired = 1
         view.addGestureRecognizer(tapRecognizer)
     }
@@ -86,18 +87,26 @@ class ChatViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func keyboardWillHide(notification: NSNotification) {
+        updateBottomConstraint(notification)
+    }
+    
     func keyboardWillShow(notification: NSNotification) {
-        if let userInfo = notification.userInfo, frame = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue, animationDuration = userInfo[UIKeyboardAnimationDurationUserInfoKey]?.doubleValue {
-                let newFrame = view.convertRect(frame, fromView: (UIApplication.sharedApplication().delegate?.window)!)
-                bottomConstraint.constant = newFrame.origin.y - CGRectGetHeight(view.frame)
-                UIView.animateWithDuration(animationDuration, animations: {
-                    self.view.layoutIfNeeded()
-                })
-        }
+        updateBottomConstraint(notification)
     }
     
     func handleSingleTap(recognizer: UITapGestureRecognizer) {
         view.endEditing(true)
+    }
+    
+    func updateBottomConstraint(notification: NSNotification) {
+        if let userInfo = notification.userInfo, frame = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue, animationDuration = userInfo[UIKeyboardAnimationDurationUserInfoKey]?.doubleValue {
+            let newFrame = view.convertRect(frame, fromView: (UIApplication.sharedApplication().delegate?.window)!)
+            bottomConstraint.constant = newFrame.origin.y - CGRectGetHeight(view.frame)
+            UIView.animateWithDuration(animationDuration, animations: {
+                self.view.layoutIfNeeded()
+            })
+        }
     }
 
 }
