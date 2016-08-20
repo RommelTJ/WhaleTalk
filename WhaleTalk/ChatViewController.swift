@@ -83,6 +83,10 @@ class ChatViewController: UIViewController {
         tapRecognizer.numberOfTapsRequired = 1
         view.addGestureRecognizer(tapRecognizer)
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        tableView.scrollToBottom()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
