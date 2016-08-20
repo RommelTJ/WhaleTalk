@@ -176,6 +176,20 @@ extension ChatViewController: UITableViewDataSource {
         cell.separatorInset = UIEdgeInsetsMake(0, tableView.bounds.size.width, 0, 0)
         return cell
     }
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView()
+        
+        view.backgroundColor = UIColor.clearColor()
+        let paddingView = UIView()
+        view.addSubview(paddingView)
+        paddingView.translatesAutoresizingMaskIntoConstraints = false
+        let dateLabel = UILabel()
+        paddingView.addSubview(dateLabel)
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }
 }
 
 extension ChatViewController: UITableViewDelegate {
