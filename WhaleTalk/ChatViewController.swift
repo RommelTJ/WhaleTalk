@@ -152,6 +152,12 @@ class ChatViewController: UIViewController {
 }
 
 extension ChatViewController: UITableViewDataSource {
+    
+    func getMessages(section: Int) -> [Message] {
+        let date = dates[section]
+        return sections[date]!
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
     }
