@@ -65,3 +65,9 @@ extension ChatViewController: UITableViewDataSource {
         return cell
     }
 }
+
+extension ChatViewController: UITableViewDelegate {
+    func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return false
+    }
+}
