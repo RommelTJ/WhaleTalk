@@ -22,7 +22,7 @@ class ChatViewController: UIViewController {
         
         for i in 0...10 {
             let m = Message()
-            m.text = String(i)
+            m.text = "This is a longer message. How does it look?"
             m.incoming = localIncoming
             localIncoming = !localIncoming
             messages.append(m)
