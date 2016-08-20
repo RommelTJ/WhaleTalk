@@ -30,7 +30,7 @@ class ChatViewController: UIViewController {
             m.timestamp = date
             m.incoming = localIncoming
             localIncoming = !localIncoming
-            messages.append(m)
+            addMessage(m)
             if i%2==0 {
                 date = NSDate(timeInterval: 60*60*24, sinceDate: date)
             }
@@ -128,11 +128,25 @@ class ChatViewController: UIViewController {
         message.text = text
         message.incoming = false
         message.timestamp = NSDate()
-        messages.append(message)
+        addMessage(message)
         newMessageField.text = ""
         tableView.reloadData()
         tableView.scrollToBottom()
         view.endEditing(true)
+    }
+    
+    func addMessage(message: Message) {
+        guard let date = message.timestamp else { return }
+        let calendar = NSCalendar.currentCalendar()
+        let startDay = calendar.startOfDayForDate(date)
+        
+        var messages = sections[startDay]
+        if messages == nil {
+            dates.append(startDay)
+            messages = [Message]()
+        }
+        messages!.append(message)
+        sections[startDay] = messages
     }
 
 }
