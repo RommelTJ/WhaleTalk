@@ -82,6 +82,17 @@ class ChatViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        if let userInfo = notification.userInfo, frame = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue, animationDuration = userInfo[UIKeyboardAnimationDurationUserInfoKey]?.doubleValue {
+                let newFrame = view.convertRect(frame, fromView: (UIApplication.sharedApplication().delegate?.window)!)
+                bottomConstraint.constant = newFrame.origin.y - CGRectGetHeight(view.frame)
+                UIView.animateWithDuration(animationDuration, animations: {
+                    self.view.layoutIfNeeded()
+                })
+        }
+        
+    }
 
 }
 
