@@ -72,8 +72,9 @@ class ChatViewController: UIViewController {
             tableView.trailingAnchor.constraintEqualToAnchor(view.trailingAnchor),
             tableView.bottomAnchor.constraintEqualToAnchor(newMessageArea.topAnchor)
         ]
-        
         NSLayoutConstraint.activateConstraints(tableViewConstraints)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
         
     }
 
