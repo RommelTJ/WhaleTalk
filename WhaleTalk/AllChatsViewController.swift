@@ -127,4 +127,24 @@ extension AllChatsViewController: NSFetchedResultsControllerDelegate {
             break
         }
     }
+    
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+        switch type {
+        case .Insert:
+            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+        case .Update:
+            let cell = tableView.cellForRowAtIndexPath(indexPath!)
+            configureCell(cell!, atIndexPath: indexPath!)
+            tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+        case .Move:
+            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+        case .Delete:
+            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+        }
+    }
+    
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        tableView.endUpdates()
+    }
 }
