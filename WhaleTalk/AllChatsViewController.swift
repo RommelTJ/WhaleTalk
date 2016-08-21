@@ -26,6 +26,7 @@ class AllChatsViewController: UIViewController {
         tableView.registerClass(ChatCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.tableFooterView = UIView(frame: CGRectZero)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.dataSource = self
         view.addSubview(tableView)
         
         //Constraints
@@ -75,4 +76,22 @@ class AllChatsViewController: UIViewController {
         
     }
 
+}
+
+extension AllChatsViewController: UITableViewDataSource {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return fetchedResultsController?.sections?.count ?? 0
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let sections = fetchedResultsController?.sections else { return 0 }
+        let currentSection = sections[section]
+        return currentSection.numberOfObjects
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)
+        configureCell(cell, atIndexPath: indexPath)
+        return cell
+    }
 }
