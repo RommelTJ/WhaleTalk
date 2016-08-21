@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ChatViewController: UIViewController {
     
@@ -16,6 +17,7 @@ class ChatViewController: UIViewController {
     private var dates = [NSDate]()
     private var bottomConstraint: NSLayoutConstraint!
     private let cellIdentifier = "Cell"
+    var context: NSManagedObjectContext?
     
     override func viewDidLoad() {
         super.viewDidLoad()
