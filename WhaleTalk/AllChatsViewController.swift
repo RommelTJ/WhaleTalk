@@ -47,6 +47,7 @@ class AllChatsViewController: UIViewController {
                 print("There was a problem fetching.")
             }
         }
+        fakeData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -56,6 +57,11 @@ class AllChatsViewController: UIViewController {
     
     func newChat() {
         
+    }
+    
+    func fakeData() {
+        guard let context = context else { return }
+        let chat = NSEntityDescription.insertNewObjectForEntityForName("Chat", inManagedObjectContext: context) as? Chat
     }
 
 }
