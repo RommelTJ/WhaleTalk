@@ -27,6 +27,7 @@ class AllChatsViewController: UIViewController {
         tableView.tableFooterView = UIView(frame: CGRectZero)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
+        tableView.delegate = self
         view.addSubview(tableView)
         
         //Constraints
@@ -93,5 +94,19 @@ extension AllChatsViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)
         configureCell(cell, atIndexPath: indexPath)
         return cell
+    }
+}
+
+extension AllChatsViewController: UITableViewDelegate {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 100
+    }
+    
+    func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        guard let chat = fetchedResultsController?.objectAtIndexPath(indexPath) as? Chat else { return }
     }
 }
