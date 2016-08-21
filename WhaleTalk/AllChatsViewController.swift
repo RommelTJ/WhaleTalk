@@ -43,6 +43,7 @@ class AllChatsViewController: UIViewController {
             let request = NSFetchRequest(entityName: "Chat")
             request.sortDescriptors = [NSSortDescriptor(key: "lastMessageTime", ascending: false)]
             fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+            fetchedResultsController?.delegate = self
             do {
                 try fetchedResultsController?.performFetch()
             } catch {
@@ -108,5 +109,22 @@ extension AllChatsViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         guard let chat = fetchedResultsController?.objectAtIndexPath(indexPath) as? Chat else { return }
+    }
+}
+
+extension AllChatsViewController: NSFetchedResultsControllerDelegate {
+    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+        tableView.beginUpdates()
+    }
+    
+    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+        switch type {
+        case .Insert:
+            tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+        case .Delete:
+            tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+        default:
+            break
+        }
     }
 }
