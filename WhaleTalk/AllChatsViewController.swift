@@ -63,5 +63,16 @@ class AllChatsViewController: UIViewController {
         guard let context = context else { return }
         let chat = NSEntityDescription.insertNewObjectForEntityForName("Chat", inManagedObjectContext: context) as? Chat
     }
+    
+    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+        let cell = cell as! ChatCell
+        guard let chat = fetchedResultsController?.objectAtIndexPath(indexPath) as? Chat else { return }
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "MM/dd/YY"
+        cell.nameLabel.text = "Liza"
+        cell.dateLabel.text = formatter.stringFromDate(NSDate())
+        cell.messageLabel.text = "Hey!"
+        
+    }
 
 }
