@@ -27,6 +27,15 @@ class AllChatsViewController: UIViewController {
         tableView.tableFooterView = UIView(frame: CGRectZero)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
+        
+        //Constraints
+        let tableViewConstraints: [NSLayoutConstraint] = [
+            tableView.topAnchor.constraintEqualToAnchor(topLayoutGuide.bottomAnchor),
+            tableView.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor),
+            tableView.trailingAnchor.constraintEqualToAnchor(view.trailingAnchor),
+            tableView.bottomAnchor.constraintEqualToAnchor(bottomLayoutGuide.topAnchor)
+        ]
+        NSLayoutConstraint.activateConstraints(tableViewConstraints)
     }
 
     override func didReceiveMemoryWarning() {
