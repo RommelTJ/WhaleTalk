@@ -26,6 +26,17 @@ class ChatCell: UITableViewCell {
             label.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview(label)
         }
+        
+        //Constraints
+        let constraints: [NSLayoutConstraint] = [
+            nameLabel.topAnchor.constraintEqualToAnchor(contentView.layoutMarginsGuide.topAnchor),
+            nameLabel.leadingAnchor.constraintEqualToAnchor(contentView.layoutMarginsGuide.leadingAnchor),
+            messageLabel.bottomAnchor.constraintEqualToAnchor(contentView.layoutMarginsGuide.bottomAnchor),
+            messageLabel.leadingAnchor.constraintEqualToAnchor(nameLabel.leadingAnchor),
+            dateLabel.trailingAnchor.constraintEqualToAnchor(contentView.layoutMarginsGuide.trailingAnchor),
+            dateLabel.firstBaselineAnchor.constraintEqualToAnchor(nameLabel.firstBaselineAnchor)
+        ]
+        NSLayoutConstraint.activateConstraints(constraints)
     }
     
     required init?(coder aDecoder: NSCoder) {
