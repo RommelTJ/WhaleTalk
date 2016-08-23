@@ -18,8 +18,22 @@ class NewChatViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        title = "New Chat"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .Plain, target: self, action: #selector(NewChatViewController.cancel))
+        automaticallyAdjustsScrollViewInsets = false
+        
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(tableView)
+        
+        let tableViewConstraints: [NSLayoutConstraint] = [
+            tableView.topAnchor.constraintEqualToAnchor(topLayoutGuide.bottomAnchor),
+            tableView.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor),
+            tableView.trailingAnchor.constraintEqualToAnchor(view.trailingAnchor),
+            tableView.bottomAnchor.constraintEqualToAnchor(bottomLayoutGuide.topAnchor)
+        ]
+        NSLayoutConstraint.activateConstraints(tableViewConstraints)
     }
 
     override func didReceiveMemoryWarning() {
@@ -27,4 +41,7 @@ class NewChatViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    func cancel() {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
 }
