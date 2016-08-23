@@ -25,6 +25,7 @@ class NewChatViewController: UIViewController {
         
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.dataSource = self
         view.addSubview(tableView)
         
         let tableViewConstraints: [NSLayoutConstraint] = [
@@ -60,4 +61,34 @@ class NewChatViewController: UIViewController {
         guard let contact = fetchedResultsController?.objectAtIndexPath(indexPath) as? Contact else { return }
         cell.textLabel?.text = contact.fullName
     }
+}
+
+extension NewChatViewController: UITableViewDataSource {
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return fetchedResultsController?.sections?.count ?? 0
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let sections = fetchedResultsController?.sections else { return 0 }
+        let currentSection = sections[section]
+        return currentSection.numberOfObjects
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)
+        configureCell(cell, atIndexPath: indexPath)
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard let sections = fetchedResultsController?.sections else { return nil }
+        let currentSection = sections[section]
+        return currentSection.name
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
 }
