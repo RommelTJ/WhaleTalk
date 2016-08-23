@@ -34,6 +34,17 @@ class NewChatViewController: UIViewController {
             tableView.bottomAnchor.constraintEqualToAnchor(bottomLayoutGuide.topAnchor)
         ]
         NSLayoutConstraint.activateConstraints(tableViewConstraints)
+        
+        if let context = context {
+            let request = NSFetchRequest(entityName: "Contact")
+            request.sortDescriptors = [NSSortDescriptor(key: "lastName", ascending: true), NSSortDescriptor(key: "firstName", ascending: true)]
+            fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: "sortLetter", cacheName: "NewChatViewController")
+            do {
+                try fetchedResultsController?.performFetch()
+            } catch {
+                print("There was a problem fetching.")
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
