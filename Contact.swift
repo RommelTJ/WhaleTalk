@@ -18,5 +18,19 @@ class Contact: NSManagedObject {
         let s = String(letter!)
         return s
     }
+    
+    var fullName: String {
+        var fullName = ""
+        if let firstName = firstName {
+            fullName += firstName
+        }
+        if let lastName = lastName {
+            if fullName.characters.count > 0 {
+                fullName += " "
+            }
+            fullName += lastName
+        }
+        return fullName
+    }
 
 }
