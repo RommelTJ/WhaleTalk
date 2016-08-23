@@ -12,6 +12,11 @@ import CoreData
 
 class Contact: NSManagedObject {
 
-// Insert code here to add functionality to your managed object subclass
+    // Insert code here to add functionality to your managed object subclass
+    var sortLetter: String {
+        let letter = lastName?.characters.first ?? firstName?.characters.first
+        let s = String(letter!)
+        return s
+    }
 
 }
