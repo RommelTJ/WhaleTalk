@@ -1,36 +1,34 @@
 //
-//  AllChatsViewController.swift
+//  NewChatViewController.swift
 //  WhaleTalk
 //
-//  Created by Rommel Rico on 8/21/16.
+//  Created by Rommel Rico on 8/22/16.
 //  Copyright © 2016 Rommel Rico. All rights reserved.
 //
 
 import UIKit
 import CoreData
 
-class AllChatsViewController: UIViewController {
+class NewChatViewController: UIViewController {
     
     var context: NSManagedObjectContext?
     private var fetchedResultsController: NSFetchedResultsController?
     private let tableView = UITableView(frame: CGRectZero, style: .Plain)
-    private let cellIdentifier = "MessageCell"
+    private let cellIdentifier = "ContactCell"
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        title = "Chats"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "new-chat"), style: .Plain, target: self, action: #selector(AllChatsViewController.newChat))
+        
+        title = "New Chat"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .Plain, target: self, action: #selector(NewChatViewController.cancel))
         automaticallyAdjustsScrollViewInsets = false
         
-        tableView.registerClass(ChatCell.self, forCellReuseIdentifier: cellIdentifier)
-        tableView.tableFooterView = UIView(frame: CGRectZero)
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
         view.addSubview(tableView)
         
-        //Constraints
         let tableViewConstraints: [NSLayoutConstraint] = [
             tableView.topAnchor.constraintEqualToAnchor(topLayoutGuide.bottomAnchor),
             tableView.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor),
@@ -40,9 +38,9 @@ class AllChatsViewController: UIViewController {
         NSLayoutConstraint.activateConstraints(tableViewConstraints)
         
         if let context = context {
-            let request = NSFetchRequest(entityName: "Chat")
-            request.sortDescriptors = [NSSortDescriptor(key: "lastMessageTime", ascending: false)]
-            fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+            let request = NSFetchRequest(entityName: "Contact")
+            request.sortDescriptors = [NSSortDescriptor(key: "lastName", ascending: true), NSSortDescriptor(key: "firstName", ascending: true)]
+            fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: "sortLetter", cacheName: "NewChatViewController")
             fetchedResultsController?.delegate = self
             do {
                 try fetchedResultsController?.performFetch()
@@ -50,40 +48,25 @@ class AllChatsViewController: UIViewController {
                 print("There was a problem fetching.")
             }
         }
-        fakeData()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    func newChat() {
-        let vc = NewChatViewController()
-        vc.context = context
-        let navVC = UINavigationController(rootViewController: vc)
-        presentViewController(navVC, animated: true, completion: nil)
-    }
-    
-    func fakeData() {
-        guard let context = context else { return }
-        let chat = NSEntityDescription.insertNewObjectForEntityForName("Chat", inManagedObjectContext: context) as? Chat
+
+    func cancel() {
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-        let cell = cell as! ChatCell
-        guard let chat = fetchedResultsController?.objectAtIndexPath(indexPath) as? Chat else { return }
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = "MM/dd/YY"
-        cell.nameLabel.text = "Liza"
-        cell.dateLabel.text = formatter.stringFromDate(NSDate())
-        cell.messageLabel.text = "Hey!"
-        
+        guard let contact = fetchedResultsController?.objectAtIndexPath(indexPath) as? Contact else { return }
+        cell.textLabel?.text = contact.fullName
     }
-
 }
 
-extension AllChatsViewController: UITableViewDataSource {
+extension NewChatViewController: UITableViewDataSource {
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return fetchedResultsController?.sections?.count ?? 0
     }
@@ -99,23 +82,29 @@ extension AllChatsViewController: UITableViewDataSource {
         configureCell(cell, atIndexPath: indexPath)
         return cell
     }
-}
-
-extension AllChatsViewController: UITableViewDelegate {
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 100
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard let sections = fetchedResultsController?.sections else { return nil }
+        let currentSection = sections[section]
+        return currentSection.name
     }
     
-    func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        guard let chat = fetchedResultsController?.objectAtIndexPath(indexPath) as? Chat else { return }
-    }
 }
 
-extension AllChatsViewController: NSFetchedResultsControllerDelegate {
+extension NewChatViewController: UITableViewDelegate {
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        guard let contact = fetchedResultsController?.objectAtIndexPath(indexPath) as? Contact else { return }
+    }
+    
+}
+
+extension NewChatViewController: NSFetchedResultsControllerDelegate {
+    
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
         tableView.beginUpdates()
     }
@@ -150,4 +139,5 @@ extension AllChatsViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
     }
+    
 }
