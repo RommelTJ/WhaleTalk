@@ -26,6 +26,7 @@ class NewChatViewController: UIViewController {
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
+        tableView.delegate = self
         view.addSubview(tableView)
         
         let tableViewConstraints: [NSLayoutConstraint] = [
@@ -89,6 +90,14 @@ extension NewChatViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
+    }
+    
+}
+
+extension NewChatViewController: UITableViewDelegate {
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        guard let contact = fetchedResultsController?.objectAtIndexPath(indexPath) as? Contact else { return }
     }
     
 }
