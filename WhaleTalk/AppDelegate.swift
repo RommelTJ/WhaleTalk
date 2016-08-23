@@ -24,6 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         context.persistentStoreCoordinator = CDHelper.sharedInstance.coordinator
         vc.context = context
         
+        fakeData(context)
+        
         return true
     }
 
