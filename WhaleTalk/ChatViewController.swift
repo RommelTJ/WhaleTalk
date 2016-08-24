@@ -141,6 +141,7 @@ class ChatViewController: UIViewController {
     
     func pressedSend(button: UIButton) {
         guard let text = newMessageField.text where text.characters.count > 0 else { return }
+        checkTemporaryContext()
         guard let context = context else { return }
         guard let message = NSEntityDescription
                             .insertNewObjectForEntityForName("Message", inManagedObjectContext: context)
@@ -188,6 +189,19 @@ class ChatViewController: UIViewController {
         }
         tableView.reloadData()
         tableView.scrollToBottom()
+    }
+    
+    func checkTemporaryContext() {
+        if let mainContext = context?.parentContext, chat = chat {
+            let tempContext = context
+            context = mainContext
+            do {
+                try tempContext?.save()
+            } catch {
+                print("Error saving tempContext.")
+            }
+            self.chat = mainContext.objectWithID(chat.objectID) as? Chat
+        }
     }
 
 }
