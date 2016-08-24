@@ -98,6 +98,10 @@ class ChatViewController: UIViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
         
+        if let mainContext = context?.parentContext ?? context {
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("contextUpdated:"), name: NSManagedObjectContextObjectsDidChangeNotification, object: mainContext)
+        }
+        
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(ChatViewController.handleSingleTap(_:)))
         tapRecognizer.numberOfTapsRequired = 1
         view.addGestureRecognizer(tapRecognizer)
@@ -171,6 +175,19 @@ class ChatViewController: UIViewController {
         messages!.append(message)
         messages!.sortInPlace({$0.timestamp!.earlierDate($1.timestamp!) == $0.timestamp!})
         sections[startDay] = messages
+    }
+    
+    func contextUpdated(notification: NSNotification) {
+        guard let set = (notification.userInfo![NSInsertedObjectsKey] as? NSSet) else { return }
+        let objects = set.allObjects
+        for obj in objects {
+            guard let message = obj as? Message else { continue }
+            if message.chat?.objectID == chat?.objectID {
+                addMessage(message)
+            }
+        }
+        tableView.reloadData()
+        tableView.scrollToBottom()
     }
 
 }
