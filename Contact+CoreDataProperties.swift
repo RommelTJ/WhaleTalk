@@ -2,7 +2,7 @@
 //  Contact+CoreDataProperties.swift
 //  WhaleTalk
 //
-//  Created by Rommel Rico on 8/22/16.
+//  Created by Rommel Rico on 8/23/16.
 //  Copyright © 2016 Rommel Rico. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -16,5 +16,6 @@ extension Contact {
 
     @NSManaged var firstName: String?
     @NSManaged var lastName: String?
+    @NSManaged var chats: NSSet?
 
 }
