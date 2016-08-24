@@ -35,7 +35,7 @@ class ChatViewController: UIViewController {
             
             let request = NSFetchRequest(entityName: "Message")
             request.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: false)]
-            if let result = try context?.executeFetchRequest(request) as? [Message] {
+            if let result = try context.executeFetchRequest(request) as? [Message] {
                 for message in result {
                     addMessage(message)
                 }
@@ -43,6 +43,7 @@ class ChatViewController: UIViewController {
         } catch {
             print("We couldn't fetch!")
         }
+        automaticallyAdjustsScrollViewInsets = false
         
         //Message Area
         let newMessageArea = UIView()
