@@ -97,7 +97,7 @@ extension NewChatViewController: UITableViewDelegate {
         guard let chat = NSEntityDescription.insertNewObjectForEntityForName("Chat", inManagedObjectContext: context) as? Chat else { return }
         
         chat.add(participant: contact)
-        ChatCreationDelegate.created(chat: chat, inContext: context)
+        chatCreationDelegate?.created(chat: chat, inContext: context)
         dismissViewControllerAnimated(false, completion: nil)
     }
     
