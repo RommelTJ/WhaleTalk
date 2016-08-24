@@ -149,7 +149,6 @@ class ChatViewController: UIViewController {
         message.text = text
         message.isIncoming = false
         message.timestamp = NSDate()
-        addMessage(message)
         do {
             try context.save()
         } catch {
@@ -157,8 +156,6 @@ class ChatViewController: UIViewController {
             return
         }
         newMessageField.text = ""
-        tableView.reloadData()
-        tableView.scrollToBottom()
         view.endEditing(true)
     }
     
