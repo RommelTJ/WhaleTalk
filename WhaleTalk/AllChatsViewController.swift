@@ -117,5 +117,10 @@ extension AllChatsViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         guard let chat = fetchedResultsController?.objectAtIndexPath(indexPath) as? Chat else { return }
+        let vc = ChatViewController()
+        vc.context = context
+        vc.chat = chat
+        navigationController?.pushViewController(vc, animated: true)
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 }
