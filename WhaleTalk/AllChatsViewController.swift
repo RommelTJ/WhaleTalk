@@ -68,11 +68,14 @@ class AllChatsViewController: UIViewController, TableViewFetchedResultsDisplayer
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         let cell = cell as! ChatCell
         guard let chat = fetchedResultsController?.objectAtIndexPath(indexPath) as? Chat else { return }
+        guard let contact = chat.participants?.anyObject() as? Contact else { return }
+        guard let lastMessage = chat.lastMessage, timestamp = lastMessage.timestamp, text = lastMessage.text else { return }
+        
         let formatter = NSDateFormatter()
         formatter.dateFormat = "MM/dd/YY"
-        cell.nameLabel.text = "Liza"
-        cell.dateLabel.text = formatter.stringFromDate(NSDate())
-        cell.messageLabel.text = "Hey!"
+        cell.nameLabel.text = contact.fullName
+        cell.dateLabel.text = formatter.stringFromDate(timestamp)
+        cell.messageLabel.text = text
         
     }
 
