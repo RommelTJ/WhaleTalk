@@ -86,6 +86,25 @@ class AllChatsViewController: UIViewController, TableViewFetchedResultsDisplayer
         
         navigationController?.pushViewController(vc, animated: true)
     }
+    
+    private func createHeader() -> UIView {
+        let header = UIView()
+        let newGroupButton = UIButton()
+        newGroupButton.translatesAutoresizingMaskIntoConstraints = false
+        header.addSubview(newGroupButton)
+        
+        newGroupButton.setTitle("New Group", forState: .Normal)
+        newGroupButton.setTitleColor(view.tintColor, forState: .Normal)
+        newGroupButton.addTarget(self, action: Selector("pressedNewGroup"), forControlEvents: .TouchUpInside)
+        
+        let border = UIView()
+        border.translatesAutoresizingMaskIntoConstraints = false
+        header.addSubview(border)
+        
+        border.backgroundColor = UIColor.lightGrayColor()
+        
+        return header
+    }
 }
 
 extension AllChatsViewController: UITableViewDataSource {
