@@ -26,6 +26,7 @@ class AllChatsViewController: UIViewController, TableViewFetchedResultsDisplayer
         
         tableView.registerClass(ChatCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.tableFooterView = UIView(frame: CGRectZero)
+        tableView.tableHeaderView = createHeader()
         tableView.dataSource = self
         tableView.delegate = self
         fillViewWith(tableView)
@@ -113,6 +114,13 @@ class AllChatsViewController: UIViewController, TableViewFetchedResultsDisplayer
             border.bottomAnchor.constraintEqualToAnchor(header.bottomAnchor)
         ]
         NSLayoutConstraint.activateConstraints(constraints)
+        
+        header.setNeedsLayout()
+        header.layoutIfNeeded()
+        let height = header.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
+        var frame = header.frame
+        frame.size.height = height
+        header.frame = frame
         
         return header
     }
