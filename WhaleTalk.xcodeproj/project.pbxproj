@@ -67,6 +67,77 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		77B5380B1D6E94C6001682BD /* ContactsVC */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = ContactsVC;
+			sourceTree = "<group>";
+		};
+		77B5380C1D6E94E3001682BD /* AllChatsVC */ = {
+			isa = PBXGroup;
+			children = (
+				7757BAE31D6A40AD0040CB74 /* AllChatsViewController.swift */,
+				7757BAE11D6A3DB50040CB74 /* ChatCell.swift */,
+			);
+			name = AllChatsVC;
+			sourceTree = "<group>";
+		};
+		77B5380D1D6E94EE001682BD /* NewChatVC */ = {
+			isa = PBXGroup;
+			children = (
+				77B6569A1D6BE034004AF8F1 /* NewChatViewController.swift */,
+			);
+			name = NewChatVC;
+			sourceTree = "<group>";
+		};
+		77B5380E1D6E94FA001682BD /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				77848C391D6D50DB00E155CA /* TableViewFetchedResultsDelegate.swift */,
+				77848C451D6D5A3200E155CA /* ChatCreationDelegate.swift */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
+		77B5380F1D6E9503001682BD /* ChatVC */ = {
+			isa = PBXGroup;
+			children = (
+				77C659651D62D02200F61AB0 /* ChatViewController.swift */,
+				77855CFF1D66B2FC002D5C99 /* MessageCell.swift */,
+			);
+			name = ChatVC;
+			sourceTree = "<group>";
+		};
+		77B538101D6E950F001682BD /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				7714C6D71D69104D0068D85F /* UITableView+Scroll.swift */,
+				77848C3B1D6D554200E155CA /* UIViewController+FillWithView.swift */,
+				7757BAD01D69F6320040CB74 /* CDHelper.swift */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		77B538111D6E9516001682BD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		77B538121D6E9573001682BD /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				7757BAD21D69F7750040CB74 /* Model.xcdatamodeld */,
+				77C659671D62D02200F61AB0 /* Main.storyboard */,
+				77C6596A1D62D02200F61AB0 /* Assets.xcassets */,
+				77C6596C1D62D02200F61AB0 /* LaunchScreen.storyboard */,
+				77C6596F1D62D02200F61AB0 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		77C659571D62D02200F61AB0 = {
 			isa = PBXGroup;
 			children = (
@@ -87,27 +158,20 @@
 			isa = PBXGroup;
 			children = (
 				77C659631D62D02200F61AB0 /* AppDelegate.swift */,
-				77C659651D62D02200F61AB0 /* ChatViewController.swift */,
-				7757BAE31D6A40AD0040CB74 /* AllChatsViewController.swift */,
-				77B6569A1D6BE034004AF8F1 /* NewChatViewController.swift */,
-				77848C3B1D6D554200E155CA /* UIViewController+FillWithView.swift */,
-				77848C451D6D5A3200E155CA /* ChatCreationDelegate.swift */,
-				77855CFF1D66B2FC002D5C99 /* MessageCell.swift */,
-				7757BAE11D6A3DB50040CB74 /* ChatCell.swift */,
-				7714C6D71D69104D0068D85F /* UITableView+Scroll.swift */,
-				77848C391D6D50DB00E155CA /* TableViewFetchedResultsDelegate.swift */,
-				7757BAD01D69F6320040CB74 /* CDHelper.swift */,
-				77B656971D6BDD1E004AF8F1 /* Contact.swift */,
+				77B5380B1D6E94C6001682BD /* ContactsVC */,
+				77B5380C1D6E94E3001682BD /* AllChatsVC */,
+				77B5380D1D6E94EE001682BD /* NewChatVC */,
+				77B5380F1D6E9503001682BD /* ChatVC */,
+				77B5380E1D6E94FA001682BD /* Protocols */,
+				77B538101D6E950F001682BD /* Helpers */,
+				77B538111D6E9516001682BD /* Frameworks */,
+				77B538121D6E9573001682BD /* Supporting Files */,
 				77B538071D6E8DB5001682BD /* Contact+CoreDataProperties.swift */,
+				77B656971D6BDD1E004AF8F1 /* Contact.swift */,
 				77B538011D6E8D42001682BD /* Message+CoreDataProperties.swift */,
 				77848C3D1D6D574200E155CA /* Chat+CoreDataProperties.swift */,
 				7757BADA1D6A3BD10040CB74 /* Chat.swift */,
 				7757BAD61D6A0A140040CB74 /* Message.swift */,
-				7757BAD21D69F7750040CB74 /* Model.xcdatamodeld */,
-				77C659671D62D02200F61AB0 /* Main.storyboard */,
-				77C6596A1D62D02200F61AB0 /* Assets.xcassets */,
-				77C6596C1D62D02200F61AB0 /* LaunchScreen.storyboard */,
-				77C6596F1D62D02200F61AB0 /* Info.plist */,
 			);
 			path = WhaleTalk;
 			sourceTree = "<group>";
