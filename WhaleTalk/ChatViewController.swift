@@ -147,7 +147,6 @@ class ChatViewController: UIViewController {
                             .insertNewObjectForEntityForName("Message", inManagedObjectContext: context)
                             as? Message else { return }
         message.text = text
-        message.isIncoming = false
         message.timestamp = NSDate()
         message.chat = chat
         chat?.lastMessageTime = message.timestamp
