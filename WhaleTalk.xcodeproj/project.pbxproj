@@ -28,6 +28,7 @@
 		77C659691D62D02200F61AB0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77C659671D62D02200F61AB0 /* Main.storyboard */; };
 		77C6596B1D62D02200F61AB0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77C6596A1D62D02200F61AB0 /* Assets.xcassets */; };
 		77C6596E1D62D02200F61AB0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77C6596C1D62D02200F61AB0 /* LaunchScreen.storyboard */; };
+		77EE5E261D6FD874006549A2 /* NewGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EE5E251D6FD874006549A2 /* NewGroupViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		77C6596A1D62D02200F61AB0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		77C6596D1D62D02200F61AB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		77C6596F1D62D02200F61AB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		77EE5E251D6FD874006549A2 /* NewGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGroupViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				77C659631D62D02200F61AB0 /* AppDelegate.swift */,
+				77EE5E251D6FD874006549A2 /* NewGroupViewController.swift */,
 				77B5380B1D6E94C6001682BD /* ContactsVC */,
 				77B5380C1D6E94E3001682BD /* AllChatsVC */,
 				77B5380D1D6E94EE001682BD /* NewChatVC */,
@@ -260,6 +263,7 @@
 				7757BAE41D6A40AD0040CB74 /* AllChatsViewController.swift in Sources */,
 				7757BAD41D69F7750040CB74 /* Model.xcdatamodeld in Sources */,
 				77855D001D66B2FC002D5C99 /* MessageCell.swift in Sources */,
+				77EE5E261D6FD874006549A2 /* NewGroupViewController.swift in Sources */,
 				7757BAD81D6A0A140040CB74 /* Message.swift in Sources */,
 				77C659661D62D02200F61AB0 /* ChatViewController.swift in Sources */,
 				77C659641D62D02200F61AB0 /* AppDelegate.swift in Sources */,
