@@ -63,7 +63,8 @@ class AllChatsViewController: UIViewController, TableViewFetchedResultsDisplayer
     
     func fakeData() {
         guard let context = context else { return }
-        let chat = NSEntityDescription.insertNewObjectForEntityForName("Chat", inManagedObjectContext: context) as? Chat
+        let _ = NSEntityDescription.insertNewObjectForEntityForName("Chat", inManagedObjectContext: context) as? Chat
+        //let chat = NSEntityDescription.insertNewObjectForEntityForName("Chat", inManagedObjectContext: context) as? Chat
     }
     
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
@@ -126,7 +127,13 @@ class AllChatsViewController: UIViewController, TableViewFetchedResultsDisplayer
     }
     
     func pressedNewGroup() {
-        
+        let vc = NewGroupViewController()
+        let chatContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        chatContext.parentContext = context
+        vc.context = chatContext
+        vc.chatCreationDelegate = self
+        let navVC = UINavigationController(rootViewController: vc)
+        presentViewController(navVC, animated: true, completion: nil)
     }
 }
 
