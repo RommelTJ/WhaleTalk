@@ -29,6 +29,7 @@
 		77EE5E261D6FD874006549A2 /* NewGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EE5E251D6FD874006549A2 /* NewGroupViewController.swift */; };
 		77EE5E2A1D6FE3D6006549A2 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EE5E281D6FE3D6006549A2 /* Chat.swift */; };
 		77EE5E2C1D6FE446006549A2 /* Chat+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EE5E2B1D6FE446006549A2 /* Chat+CoreDataProperties.swift */; };
+		77EE5E2E1D6FE50F006549A2 /* NewGroupParticipantsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EE5E2D1D6FE50F006549A2 /* NewGroupParticipantsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		77EE5E251D6FD874006549A2 /* NewGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGroupViewController.swift; sourceTree = "<group>"; };
 		77EE5E281D6FE3D6006549A2 /* Chat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		77EE5E2B1D6FE446006549A2 /* Chat+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Chat+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		77EE5E2D1D6FE50F006549A2 /* NewGroupParticipantsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGroupParticipantsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +169,7 @@
 			children = (
 				77C659631D62D02200F61AB0 /* AppDelegate.swift */,
 				77EE5E251D6FD874006549A2 /* NewGroupViewController.swift */,
+				77EE5E2D1D6FE50F006549A2 /* NewGroupParticipantsViewController.swift */,
 				77B5380B1D6E94C6001682BD /* ContactsVC */,
 				77B5380C1D6E94E3001682BD /* AllChatsVC */,
 				77B5380D1D6E94EE001682BD /* NewChatVC */,
@@ -257,6 +260,7 @@
 				7757BAD11D69F6320040CB74 /* CDHelper.swift in Sources */,
 				77B538091D6E8DB5001682BD /* Contact+CoreDataProperties.swift in Sources */,
 				77EE5E2C1D6FE446006549A2 /* Chat+CoreDataProperties.swift in Sources */,
+				77EE5E2E1D6FE50F006549A2 /* NewGroupParticipantsViewController.swift in Sources */,
 				77B656991D6BDD1E004AF8F1 /* Contact.swift in Sources */,
 				77848C3C1D6D554200E155CA /* UIViewController+FillWithView.swift in Sources */,
 				7757BAE41D6A40AD0040CB74 /* AllChatsViewController.swift in Sources */,
