@@ -11,7 +11,7 @@ import CoreData
 
 
 class Chat: NSManagedObject {
-
+    
     // Insert code here to add functionality to your managed object subclass
     var lastMessage: Message? {
         let request = NSFetchRequest(entityName: "Message")
@@ -30,5 +30,5 @@ class Chat: NSManagedObject {
     func add(participant contact: Contact) {
         mutableSetValueForKey("participants").addObject(contact)
     }
-
+    
 }
