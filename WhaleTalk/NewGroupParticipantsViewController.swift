@@ -15,11 +15,23 @@ class NewGroupParticipantsViewController: UIViewController {
     var chat: Chat?
     var chatCreationDelegate: ChatCreationDelegate?
     private var searchField: UITextField!
+    private let tableView = UITableView(frame: CGRectZero, style: .Plain)
+    private let cellIdentifier = "ContactCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Add Participants"
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Create", style: .Plain, target: self, action: "createChat")
+        showCreateButton(false)
+        
+        automaticallyAdjustsScrollViewInsets = false
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.tableFooterView = UIView(frame: CGRectZero)
+        searchField = createSearchField()
+        tableView.tableHeaderView = searchField
+        fillViewWith(tableView)
     }
 
     override func didReceiveMemoryWarning() {
@@ -43,7 +55,29 @@ class NewGroupParticipantsViewController: UIViewController {
         holderView.addSubview(contactImage)
         contactImage.translatesAutoresizingMaskIntoConstraints = false
         
+        let constraints: [NSLayoutConstraint] = [
+            contactImage.widthAnchor.constraintEqualToAnchor(holderView.widthAnchor, constant: -20),
+            contactImage.heightAnchor.constraintEqualToAnchor(holderView.heightAnchor, constant: -20),
+            contactImage.centerXAnchor.constraintEqualToAnchor(holderView.centerXAnchor),
+            contactImage.centerYAnchor.constraintEqualToAnchor(holderView.centerYAnchor)
+        ]
+        NSLayoutConstraint.activateConstraints(constraints)
+        
         return searchField
+    }
+    
+    private func showCreateButton(show: Bool) {
+        if show {
+            navigationItem.rightBarButtonItem?.tintColor = view.tintColor
+            navigationItem.rightBarButtonItem?.enabled = true
+        } else {
+            navigationItem.rightBarButtonItem?.tintColor = UIColor.lightGrayColor()
+            navigationItem.rightBarButtonItem?.enabled = false
+        }
+    }
+    
+    private func createChat() {
+        //TODO
     }
 
 }
