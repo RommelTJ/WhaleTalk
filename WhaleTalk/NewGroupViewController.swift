@@ -24,11 +24,13 @@ class NewGroupViewController: UIViewController {
         view.backgroundColor = UIColor.whiteColor()
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .Plain, target: self, action: #selector(NewGroupViewController.cancel))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .Plain, target: self, action: #selector(NewGroupViewController.next))
+        updateNextButton(forCharCount: 0)
         
         subjectField.placeholder = "Group Subject"
         subjectField.delegate = self
         subjectField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(subjectField)
+        updateCharacterLabel(forCharCount: 0)
         
         characterNumberLabel.textColor = UIColor.grayColor()
         characterNumberLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -61,11 +63,39 @@ class NewGroupViewController: UIViewController {
     }
     
     func cancel() {
-        
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     func next() {
-        
+        //TODO
+    }
+    
+    func updateCharacterLabel(forCharCount length: Int) {
+        characterNumberLabel.text = String(25 - length)
+    }
+    
+    func updateNextButton(forCharCount length: Int) {
+        if length == 0 {
+            navigationItem.rightBarButtonItem?.tintColor = UIColor.lightGrayColor()
+            navigationItem.rightBarButtonItem?.enabled = false
+        } else {
+            navigationItem.rightBarButtonItem?.tintColor = view.tintColor
+            navigationItem.rightBarButtonItem?.enabled = true
+        }
     }
 
+}
+
+extension NewGroupViewController: UITextFieldDelegate {
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        let currentCharCount = textField.text?.characters.count ?? 0
+        let newLength = currentCharCount + string.characters.count - range.length
+        
+        if newLength <= 25 {
+            updateCharacterLabel(forCharCount: newLength)
+            updateNextButton(forCharCount: newLength)
+            return true
+        }
+        return false
+    }
 }
