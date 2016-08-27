@@ -17,6 +17,7 @@ class NewGroupParticipantsViewController: UIViewController {
     private var searchField: UITextField!
     private let tableView = UITableView(frame: CGRectZero, style: .Plain)
     private let cellIdentifier = "ContactCell"
+    private var displayedContacts = [Contact]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,10 +29,23 @@ class NewGroupParticipantsViewController: UIViewController {
         
         automaticallyAdjustsScrollViewInsets = false
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.dataSource = self
         tableView.tableFooterView = UIView(frame: CGRectZero)
         searchField = createSearchField()
         tableView.tableHeaderView = searchField
         fillViewWith(tableView)
+        
+        if let context = context {
+            let request = NSFetchRequest(entityName: "Contact")
+            request.sortDescriptors = [NSSortDescriptor(key: "lastName", ascending: true), NSSortDescriptor(key: "firstName", ascending: true)]
+            do {
+                if let result = try context.executeFetchRequest(request) as? [Contact] {
+                    displayedContacts = result
+                }
+            } catch {
+                print("There was a problem fetching.")
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -80,4 +94,20 @@ class NewGroupParticipantsViewController: UIViewController {
         //TODO
     }
 
+}
+
+extension NewGroupParticipantsViewController: UITableViewDataSource {
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return displayedContacts.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)
+        let contact = displayedContacts[indexPath.row]
+        cell.textLabel?.text = contact.fullName
+        cell.selectionStyle = .None
+        return cell
+    }
+    
 }
