@@ -10,12 +10,25 @@ import Foundation
 import CoreData
 import Contacts
 
-class ContactImporter {
+class ContactImporter: NSObject {
     
     private var context: NSManagedObjectContext
+    private var lastCNNotificationTime: NSDate?
     
     init(context: NSManagedObjectContext) {
         self.context = context
+    }
+    
+    func listenForChanges() {
+        CNContactStore.authorizationStatusForEntityType(.Contacts)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ContactImporter.addressBookDidChange(_:)), name: CNContactStoreDidChangeNotification, object: nil)
+    }
+    
+    func addressBookDidChange(notification: NSNotification) {
+        let now = NSDate()
+        guard lastCNNotificationTime == nil || now.timeIntervalSinceDate(lastCNNotificationTime!) > 1 else { return }
+        lastCNNotificationTime = now
+        fetch()	
     }
     
     func formatPhoneNumber(number: CNPhoneNumber) -> String {
@@ -26,37 +39,63 @@ class ContactImporter {
             .stringByReplacingOccurrencesOfString(")", withString: "")
     }
     
+    private func fetchExisting() -> (contacts: [String: Contact], phoneNumbers: [String: PhoneNumber]) {
+        var contacts = [String: Contact]()
+        var phoneNumbers = [String: PhoneNumber]()
+        do {
+            let request = NSFetchRequest(entityName: "Contact")
+            request.relationshipKeyPathsForPrefetching = ["phoneNumbers"]
+            if let contactsResults = try self.context.executeFetchRequest(request) as? [Contact] {
+                for contact in contactsResults {
+                    contacts[contact.contactId!] = contact
+                    for phoneNumber in contact.phoneNumbers! {
+                        phoneNumbers[phoneNumber.value] = phoneNumber as? PhoneNumber
+                    }
+                }
+            }
+        } catch {
+            print("Error")
+        }
+        return (contacts, phoneNumbers)
+    }
+    
     func fetch() {
         let store = CNContactStore()
         store.requestAccessForEntityType(.Contacts) { (granted, error) in
-            if granted {
-                do {
-                    let req = CNContactFetchRequest(keysToFetch: [
-                        CNContactGivenNameKey,
-                        CNContactFamilyNameKey,
-                        CNContactPhoneNumbersKey
-                        ])
-                    try store.enumerateContactsWithFetchRequest(req, usingBlock: { (cnContact, stop) in
-                        guard let contact = NSEntityDescription.insertNewObjectForEntityForName("Contact", inManagedObjectContext: self.context) as? Contact else { return }
+            
+            self.context.performBlock({ 
+                if granted {
+                    do {
+                        let (contacts, phoneNumbers) = self.fetchExisting()
                         
-                        contact.firstName = cnContact.givenName
-                        contact.lastName = cnContact.familyName
-                        contact.contactId = cnContact.identifier
-                        let contactNumbers = NSMutableSet()
-                        for cnVal in cnContact.phoneNumbers {
-                            guard let cnPhoneNumber = cnVal.value as? CNPhoneNumber else { continue }
-                            guard let phoneNumber = NSEntityDescription.insertNewObjectForEntityForName("PhoneNumber", inManagedObjectContext: self.context) as? PhoneNumber else { continue }
-                            phoneNumber.value = self.formatPhoneNumber(cnPhoneNumber)
-                            contactNumbers.addObject(phoneNumber)
-                        }
-                        contact.phoneNumbers  = contactNumbers
-                    })
-                } catch let error as NSError {
-                    print(error)
-                } catch {
-                    print("Error with do-catch")
+                        let req = CNContactFetchRequest(keysToFetch: [
+                            CNContactGivenNameKey,
+                            CNContactFamilyNameKey,
+                            CNContactPhoneNumbersKey
+                            ])
+                        try store.enumerateContactsWithFetchRequest(req, usingBlock: { (cnContact, stop) in
+                            guard let contact = contacts[cnContact.identifier] ?? NSEntityDescription.insertNewObjectForEntityForName("Contact", inManagedObjectContext: self.context) as? Contact else { return }
+                            
+                            contact.firstName = cnContact.givenName
+                            contact.lastName = cnContact.familyName
+                            contact.contactId = cnContact.identifier
+
+                            for cnVal in cnContact.phoneNumbers {
+                                guard let cnPhoneNumber = cnVal.value as? CNPhoneNumber else { continue }
+                                guard let phoneNumber = phoneNumbers[cnPhoneNumber.stringValue] ?? NSEntityDescription.insertNewObjectForEntityForName("PhoneNumber", inManagedObjectContext: self.context) as? PhoneNumber else { continue }
+                                phoneNumber.value = self.formatPhoneNumber(cnPhoneNumber)
+                                phoneNumber.contact = contact
+                            }
+                        })
+                        try self.context.save()
+                    } catch let error as NSError {
+                        print(error)
+                    } catch {
+                        print("Error with do-catch")
+                    }
                 }
-            }
+            })
+            
         }
     }
     
