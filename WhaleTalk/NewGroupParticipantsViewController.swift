@@ -18,6 +18,7 @@ class NewGroupParticipantsViewController: UIViewController {
     private let tableView = UITableView(frame: CGRectZero, style: .Plain)
     private let cellIdentifier = "ContactCell"
     private var displayedContacts = [Contact]()
+    private var allContacts = [Contact]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +41,7 @@ class NewGroupParticipantsViewController: UIViewController {
             request.sortDescriptors = [NSSortDescriptor(key: "lastName", ascending: true), NSSortDescriptor(key: "firstName", ascending: true)]
             do {
                 if let result = try context.executeFetchRequest(request) as? [Contact] {
-                    displayedContacts = result
+                    allContacts = result
                 }
             } catch {
                 print("There was a problem fetching.")
@@ -88,6 +89,11 @@ class NewGroupParticipantsViewController: UIViewController {
             navigationItem.rightBarButtonItem?.tintColor = UIColor.lightGrayColor()
             navigationItem.rightBarButtonItem?.enabled = false
         }
+    }
+    
+    private func endSearch() {
+        displayedContacts = selectedContacts
+        tableView.reloadData()
     }
     
     private func createChat() {
