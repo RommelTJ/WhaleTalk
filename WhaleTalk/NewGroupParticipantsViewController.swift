@@ -27,7 +27,7 @@ class NewGroupParticipantsViewController: UIViewController {
         
         title = "Add Participants"
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Create", style: .Plain, target: self, action: "createChat")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Create", style: .Plain, target: self, action: #selector(NewGroupParticipantsViewController.createChat))
         showCreateButton(false)
         
         automaticallyAdjustsScrollViewInsets = false
@@ -101,8 +101,11 @@ class NewGroupParticipantsViewController: UIViewController {
         tableView.reloadData()
     }
     
-    private func createChat() {
-        //TODO
+    func createChat() {
+        guard let chat = chat, context = context else { return }
+        chat.participants = NSSet(array: selectedContacts)
+        chatCreationDelegate?.created(chat: chat, inContext: context)
+        dismissViewControllerAnimated(false, completion: nil)
     }
 
 }
