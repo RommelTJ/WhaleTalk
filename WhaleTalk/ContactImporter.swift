@@ -18,6 +18,14 @@ class ContactImporter {
         self.context = context
     }
     
+    func formatPhoneNumber(number: CNPhoneNumber) -> String {
+        return number.stringValue
+            .stringByReplacingOccurrencesOfString(" ", withString: "")
+            .stringByReplacingOccurrencesOfString("-", withString: "")
+            .stringByReplacingOccurrencesOfString("(", withString: "")
+            .stringByReplacingOccurrencesOfString(")", withString: "")
+    }
+    
     func fetch() {
         let store = CNContactStore()
         store.requestAccessForEntityType(.Contacts) { (granted, error) in
