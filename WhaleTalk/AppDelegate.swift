@@ -26,6 +26,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         importContacts(contactsContext)
         contactImporter?.listenForChanges()
         
+        let tabController = UITabBarController()
+        let vcData:[(UIViewController, UIImage)] = [
+            (AllChatsViewController(), UIImage(named: "chat_icon")!)
+        ]
+        let vcs = vcData.map { (vc: UIViewController, image: UIImage) -> UINavigationController in
+            if var vc = vc as? ContextViewController {
+                vc.context = mainContext
+            }
+            let nav = UINavigationController(rootViewController: vc)
+            nav.tabBarItem.image = image
+            return nav
+        }
+        tabController.viewControllers = vcs
+        window?.rootViewController = tabController
+        
         return true
     }
 
