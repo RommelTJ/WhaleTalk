@@ -20,6 +20,7 @@ class NewGroupParticipantsViewController: UIViewController {
     private var displayedContacts = [Contact]()
     private var allContacts = [Contact]()
     private var selectedContacts = [Contact]()
+    private var isSearching = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +33,7 @@ class NewGroupParticipantsViewController: UIViewController {
         automaticallyAdjustsScrollViewInsets = false
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.dataSource = self
+        tableView.delegate = self
         tableView.tableFooterView = UIView(frame: CGRectZero)
         searchField = createSearchField()
         searchField.delegate = self
@@ -94,6 +96,7 @@ class NewGroupParticipantsViewController: UIViewController {
     }
     
     private func endSearch() {
+        isSearching = false
         displayedContacts = selectedContacts
         tableView.reloadData()
     }
@@ -120,9 +123,29 @@ extension NewGroupParticipantsViewController: UITableViewDataSource {
     
 }
 
+extension NewGroupParticipantsViewController: UITableViewDelegate {
+    
+    func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        guard isSearching else { return }
+        let contact = displayedContacts[indexPath.row]
+        guard !selectedContacts.contains(contact) else { return }
+        selectedContacts.append(contact)
+        allContacts.removeAtIndex(allContacts.indexOf(contact)!)
+        searchField.text = ""
+        endSearch()
+        showCreateButton(true)
+    }
+    
+}
+
 extension NewGroupParticipantsViewController: UITextFieldDelegate {
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        isSearching = true
         guard let currentText = textField.text else {
             endSearch()
             return true
