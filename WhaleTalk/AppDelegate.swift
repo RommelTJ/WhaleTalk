@@ -17,17 +17,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
-        let vc = AllChatsViewController()
-        let nav = UINavigationController(rootViewController: vc)
-        window?.rootViewController = nav
-        let context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        context.persistentStoreCoordinator = CDHelper.sharedInstance.coordinator
-        vc.context = context
         
+        let mainContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        mainContext.persistentStoreCoordinator = CDHelper.sharedInstance.coordinator
         let contactsContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         contactsContext.persistentStoreCoordinator = CDHelper.sharedInstance.coordinator
-        contactImporter = ContactImporter(context: context)
+        contactImporter = ContactImporter(context: contactsContext)
         importContacts(contactsContext)
         contactImporter?.listenForChanges()
         
