@@ -10,24 +10,29 @@ import Foundation
 import CoreData
 import Contacts
 
-func fetch() {
-    let store = CNContactStore()
-    store.requestAccessForEntityType(.Contacts) { (granted, error) in
-        if granted {
-            do {
-                let req = CNContactFetchRequest(keysToFetch: [
+class ContactImporter {
+    
+    func fetch() {
+        let store = CNContactStore()
+        store.requestAccessForEntityType(.Contacts) { (granted, error) in
+            if granted {
+                do {
+                    let req = CNContactFetchRequest(keysToFetch: [
                         CNContactGivenNameKey,
                         CNContactFamilyNameKey,
                         CNContactPhoneNumbersKey
-                    ])
-                try store.enumerateContactsWithFetchRequest(req, usingBlock: { (cnContact, stop) in
-                    print(cnContact)
-                })
-            } catch let error as NSError {
-                print(error)
-            } catch {
-                print("Error with do-catch")
+                        ])
+                    try store.enumerateContactsWithFetchRequest(req, usingBlock: { (cnContact, stop) in
+                        print(cnContact)
+                    })
+                } catch let error as NSError {
+                    print(error)
+                } catch {
+                    print("Error with do-catch")
+                }
             }
         }
     }
+    
 }
+
