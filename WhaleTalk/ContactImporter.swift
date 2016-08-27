@@ -28,6 +28,7 @@ class ContactImporter: NSObject {
         let now = NSDate()
         guard lastCNNotificationTime == nil || now.timeIntervalSinceDate(lastCNNotificationTime!) > 1 else { return }
         lastCNNotificationTime = now
+        fetch()	
     }
     
     func formatPhoneNumber(number: CNPhoneNumber) -> String {
@@ -38,6 +39,26 @@ class ContactImporter: NSObject {
             .stringByReplacingOccurrencesOfString(")", withString: "")
     }
     
+    private func fetchExisting() -> (contacts: [String: Contact], phoneNumbers: [String: PhoneNumber]) {
+        var contacts = [String: Contact]()
+        var phoneNumbers = [String: PhoneNumber]()
+        do {
+            let request = NSFetchRequest(entityName: "Contact")
+            request.relationshipKeyPathsForPrefetching = ["phoneNumbers"]
+            if let contactsResults = try self.context.executeFetchRequest(request) as? [Contact] {
+                for contact in contactsResults {
+                    contacts[contact.contactId!] = contact
+                    for phoneNumber in contact.phoneNumbers! {
+                        phoneNumbers[phoneNumber.value] = phoneNumber as? PhoneNumber
+                    }
+                }
+            }
+        } catch {
+            print("Error")
+        }
+        return (contacts, phoneNumbers)
+    }
+    
     func fetch() {
         let store = CNContactStore()
         store.requestAccessForEntityType(.Contacts) { (granted, error) in
@@ -45,13 +66,15 @@ class ContactImporter: NSObject {
             self.context.performBlock({ 
                 if granted {
                     do {
+                        let (contacts, phoneNumbers) = self.fetchExisting()
+                        
                         let req = CNContactFetchRequest(keysToFetch: [
                             CNContactGivenNameKey,
                             CNContactFamilyNameKey,
                             CNContactPhoneNumbersKey
                             ])
                         try store.enumerateContactsWithFetchRequest(req, usingBlock: { (cnContact, stop) in
-                            guard let contact = NSEntityDescription.insertNewObjectForEntityForName("Contact", inManagedObjectContext: self.context) as? Contact else { return }
+                            guard let contact = contacts[cnContact.identifier] ?? NSEntityDescription.insertNewObjectForEntityForName("Contact", inManagedObjectContext: self.context) as? Contact else { return }
                             
                             contact.firstName = cnContact.givenName
                             contact.lastName = cnContact.familyName
@@ -59,7 +82,7 @@ class ContactImporter: NSObject {
 
                             for cnVal in cnContact.phoneNumbers {
                                 guard let cnPhoneNumber = cnVal.value as? CNPhoneNumber else { continue }
-                                guard let phoneNumber = NSEntityDescription.insertNewObjectForEntityForName("PhoneNumber", inManagedObjectContext: self.context) as? PhoneNumber else { continue }
+                                guard let phoneNumber = phoneNumbers[cnPhoneNumber.stringValue] ?? NSEntityDescription.insertNewObjectForEntityForName("PhoneNumber", inManagedObjectContext: self.context) as? PhoneNumber else { continue }
                                 phoneNumber.value = self.formatPhoneNumber(cnPhoneNumber)
                                 phoneNumber.contact = contact
                             }
