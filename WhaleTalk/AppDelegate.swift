@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     private var contactImporter: ContactImporter?
-
+    private var contactsSyncer: Syncer?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         mainContext.persistentStoreCoordinator = CDHelper.sharedInstance.coordinator
         let contactsContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         contactsContext.persistentStoreCoordinator = CDHelper.sharedInstance.coordinator
+        contactsSyncer = Syncer(mainContext: mainContext, backgroundContext: contactsContext)
         contactImporter = ContactImporter(context: contactsContext)
         importContacts(contactsContext)
         contactImporter?.listenForChanges()

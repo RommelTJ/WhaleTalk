@@ -64,7 +64,9 @@ class ContactsViewController: UIViewController, ContextViewController, TableView
     }
 
     func newContact() {
-        //TODO
+        let vc = CNContactViewController(forNewContact: nil)
+        vc.delegate = self
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
@@ -125,6 +127,17 @@ extension ContactsViewController: UITableViewDelegate {
         guard let contact = fetchedResultsController?.objectAtIndexPath(indexPath) as? Contact else { return }
         selectedContact(contact)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+}
+
+extension ContactsViewController: CNContactViewControllerDelegate {
+    
+    func contactViewController(viewController: CNContactViewController, didCompleteWithContact contact: CNContact?) {
+        if contact == nil {
+            navigationController?.popViewControllerAnimated(true)
+            return
+        }
     }
     
 }
