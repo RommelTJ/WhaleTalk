@@ -30,5 +30,14 @@ class FavoritesViewController: UIViewController, TableViewFetchedResultsDisplaye
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+        guard let contact = fetchedResultsController?.objectAtIndexPath(indexPath) as? Contact else { return }
+        guard let cell = cell as? FavoriteCell else { return }
+        cell.textLabel?.text = contact.fullName
+        cell.detailTextLabel?.text = "*** no status ***"
+        cell.phoneTypeLabel.text = "mobile"
+        cell.accessoryType = .DetailButton
+    }
 
 }
