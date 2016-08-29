@@ -27,6 +27,7 @@ class ContactsViewController: UIViewController, ContextViewController, TableView
         automaticallyAdjustsScrollViewInsets = false
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.tableFooterView = UIView(frame: CGRectZero)
+        tableView.dataSource = self
         fillViewWith(tableView)
         
         if let context = context {
@@ -58,6 +59,32 @@ class ContactsViewController: UIViewController, ContextViewController, TableView
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         guard let contact = fetchedResultsController?.objectAtIndexPath(indexPath) as? Contact else { return }
         cell.textLabel?.text = contact.fullName
+    }
+    
+}
+
+extension ContactsViewController: UITableViewDataSource {
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return fetchedResultsController?.sections?.count ?? 0
+    }
+
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let sections = fetchedResultsController?.sections else { return 0 }
+        let currentSection = sections[section]
+        return currentSection.numberOfObjects
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)
+        configureCell(cell, atIndexPath: indexPath)
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard let sections = fetchedResultsController?.sections else { return nil }
+        let currentSection = sections[section]
+        return currentSection.name
     }
     
 }
