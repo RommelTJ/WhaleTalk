@@ -18,6 +18,21 @@ class Syncer: NSObject {
         self.mainContext = mainContext
         self.backgroundContext = backgroundContext
         super.init()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(Syncer.mainContextSaved(_:)), name: NSManagedObjectContextDidSaveNotification, object: mainContext)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(Syncer.backgroundContextSaved(_:)), name: NSManagedObjectContextDidSaveNotification, object: mainContext)
+    }
+    
+    func mainContextSaved(notification: NSNotification) {
+        backgroundContext.performBlock { 
+            self.backgroundContext.mergeChangesFromContextDidSaveNotification(notification)
+        }
+    }
+    
+    func backgroundContextSaved(notification: NSNotification) {
+        mainContext.performBlock { 
+            self.mainContext.mergeChangesFromContextDidSaveNotification(notification)
+        }
     }
 
 }
