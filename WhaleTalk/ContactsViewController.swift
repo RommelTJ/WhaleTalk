@@ -71,6 +71,21 @@ class ContactsViewController: UIViewController, ContextViewController, TableView
         cell.textLabel?.text = contact.fullName
     }
     
+    func selectedContact(contact: Contact) {
+        guard let id = contact.contactId else { return }
+        let store = CNContactStore()
+        let cnContact: CNContact
+        do {
+            cnContact = try store.unifiedContactWithIdentifier(id, keysToFetch: [CNContactViewController.descriptorForRequiredKeys()])
+        } catch {
+            return
+        }
+        let vc = CNContactViewController(forContact: cnContact)
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
+        searchController?.active = false
+    }
+    
 }
 
 extension ContactsViewController: UITableViewDataSource {
