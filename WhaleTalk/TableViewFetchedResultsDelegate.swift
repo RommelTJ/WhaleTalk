@@ -56,6 +56,3 @@ class TableViewFetchedResultsDelegate: NSObject, NSFetchedResultsControllerDeleg
     
 }
 
-protocol TableViewFetchedResultsDisplayer {
-    func configureCell(cell: UITableViewCell, atIndexPath: NSIndexPath)
-}
