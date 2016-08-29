@@ -29,6 +29,7 @@ class ContactsViewController: UIViewController, ContextViewController, TableView
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.tableFooterView = UIView(frame: CGRectZero)
         tableView.dataSource = self
+        tableView.delegate = self
         fillViewWith(tableView)
         
         if let context = context {
@@ -110,6 +111,20 @@ extension ContactsViewController: UITableViewDataSource {
         guard let sections = fetchedResultsController?.sections else { return nil }
         let currentSection = sections[section]
         return currentSection.name
+    }
+    
+}
+
+extension ContactsViewController: UITableViewDelegate {
+    
+    func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        guard let contact = fetchedResultsController?.objectAtIndexPath(indexPath) as? Contact else { return }
+        selectedContact(contact)
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
 }
