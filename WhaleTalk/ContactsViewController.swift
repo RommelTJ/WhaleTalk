@@ -55,8 +55,9 @@ class ContactsViewController: UIViewController, ContextViewController, TableView
         //TODO
     }
     
-    func configureCell(cell: UITableViewCell, atIndexPath: NSIndexPath) {
-        //TODO
+    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+        guard let contact = fetchedResultsController?.objectAtIndexPath(indexPath) as? Contact else { return }
+        cell.textLabel?.text = contact.fullName
     }
     
 }

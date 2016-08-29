@@ -10,5 +10,5 @@ import Foundation
 import UIKit
 
 protocol TableViewFetchedResultsDisplayer {
-    func configureCell(cell: UITableViewCell, atIndexPath: NSIndexPath)
+    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath)
 }
