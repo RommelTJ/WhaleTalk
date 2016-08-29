@@ -11,6 +11,7 @@ import CoreData
 
 class ContactsSearchResultsController: UITableViewController {
 
+    var contactSelector: ContactSelector?
     private var filteredContacts = [Contact]()
     var contacts = [Contact]() {
         didSet {
@@ -52,6 +53,7 @@ class ContactsSearchResultsController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let contact = filteredContacts[indexPath.row]
+        contactSelector?.selectedContact(contact)
     }
 
     /*
