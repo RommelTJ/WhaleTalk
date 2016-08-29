@@ -11,6 +11,7 @@ import CoreData
 
 class ContactsSearchResultsController: UITableViewController {
 
+    private var contactSelector: ContactSelector?
     private var filteredContacts = [Contact]()
     var contacts = [Contact]() {
         didSet {

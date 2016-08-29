@@ -11,7 +11,7 @@ import CoreData
 import Contacts
 import ContactsUI
 
-class ContactsViewController: UIViewController, ContextViewController, TableViewFetchedResultsDisplayer {
+class ContactsViewController: UIViewController, ContextViewController, TableViewFetchedResultsDisplayer, ContactSelector {
 
     var context: NSManagedObjectContext?
     private let tableView = UITableView(frame: CGRectZero, style: .Plain)
@@ -49,6 +49,7 @@ class ContactsViewController: UIViewController, ContextViewController, TableView
         
         let resultsVC = ContactsSearchResultsController()
         resultsVC.contacts = fetchedResultsController?.fetchedObjects as! [Contact]
+        resultsVC.contactSelector = self
         
         searchController = UISearchController(searchResultsController: resultsVC)
         searchController?.searchResultsUpdater = resultsVC
