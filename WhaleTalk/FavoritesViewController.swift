@@ -23,7 +23,29 @@ class FavoritesViewController: UIViewController, TableViewFetchedResultsDisplaye
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        title = "Favorites"
+        
+        automaticallyAdjustsScrollViewInsets = false
+        tableView.registerClass(FavoriteCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.tableFooterView = UIView(frame: CGRectZero)
+        fillViewWith(tableView)
+        
+        if let context = context {
+            let request = NSFetchRequest(entityName: "Contact")
+            request.sortDescriptors = [
+                NSSortDescriptor(key: "lastName", ascending: true),
+                NSSortDescriptor(key: "firstName", ascending: true)
+            ]
+            fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+            fetchedResultsDelegate = TableViewFetchedResultsDelegate(tableView: tableView, displayer: self)
+            fetchedResultsController?.delegate = fetchedResultsDelegate
+            
+            do {
+                try fetchedResultsController?.performFetch()
+            } catch {
+                print("There was a problem fetching.")
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
