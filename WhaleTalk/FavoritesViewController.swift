@@ -62,7 +62,7 @@ class FavoritesViewController: UIViewController, TableViewFetchedResultsDisplaye
         super.setEditing(editing, animated: animated)
         if editing {
             tableView.setEditing(true, animated: true)
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Delete All", style: .Plain, target: self, action: "deleteAll")
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Delete All", style: .Plain, target: self, action: #selector(FavoritesViewController.deleteAll))
         } else {
             tableView.setEditing(false, animated: true)
             navigationItem.rightBarButtonItem = nil
@@ -129,7 +129,18 @@ extension FavoritesViewController: UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        guard let _ = fetchedResultsController?.objectAtIndexPath(indexPath) as? Contact else { return }
+        guard let contact = fetchedResultsController?.objectAtIndexPath(indexPath) as? Contact else { return }
+        let chatContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        chatContext.parentContext = context
+        
+        let chat = Chat.existing(directWith: contact, inContext: chatContext) ?? Chat.new(directWith: contact, inContext: chatContext)
+        
+        let vc = ChatViewController()
+        vc.context = chatContext
+        vc.chat = chat
+        vc.hidesBottomBarWhenPushed = true
+        
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
