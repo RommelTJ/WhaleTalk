@@ -34,4 +34,16 @@ class Chat: NSManagedObject {
         mutableSetValueForKey("participants").addObject(contact)
     }
     
+    static func existing(directWith contact: Contact, inContext context: NSManagedObjectContext) -> Chat? {
+        let request = NSFetchRequest(entityName: "Chat")
+        request.predicate = NSPredicate(format: "ANY participants = %@ AND participants.@count = 1", contact)
+        do {
+            guard let results = try context.executeFetchRequest(request) as? [Chat] else { return nil }
+            return results.first
+        } catch {
+            print("Error fetching")
+        }
+        return nil
+    }
+    
 }

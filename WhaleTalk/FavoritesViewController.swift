@@ -62,7 +62,7 @@ class FavoritesViewController: UIViewController, TableViewFetchedResultsDisplaye
         super.setEditing(editing, animated: animated)
         if editing {
             tableView.setEditing(true, animated: true)
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Delete All", style: .Plain, target: self, action: "deleteAll")
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Delete All", style: .Plain, target: self, action: #selector(FavoritesViewController.deleteAll))
         } else {
             tableView.setEditing(false, animated: true)
             navigationItem.rightBarButtonItem = nil
