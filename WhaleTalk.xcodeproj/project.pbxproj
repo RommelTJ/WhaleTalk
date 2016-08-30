@@ -109,6 +109,23 @@
 			name = NewGroupParticipantsVC;
 			sourceTree = "<group>";
 		};
+		777548491D75408D00F274E6 /* FavoritesVC */ = {
+			isa = PBXGroup;
+			children = (
+				772959BF1D73EBAD00A126BF /* FavoriteCell.swift */,
+				772959C11D73ECF300A126BF /* FavoritesViewController.swift */,
+			);
+			name = FavoritesVC;
+			sourceTree = "<group>";
+		};
+		7775484A1D7540BA00F274E6 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				772959BD1D73E98100A126BF /* Syncer.swift */,
+			);
+			name = Data;
+			sourceTree = "<group>";
+		};
 		77B5380B1D6E94C6001682BD /* ContactsVC */ = {
 			isa = PBXGroup;
 			children = (
@@ -214,16 +231,15 @@
 			isa = PBXGroup;
 			children = (
 				77C659631D62D02200F61AB0 /* AppDelegate.swift */,
-				772959BD1D73E98100A126BF /* Syncer.swift */,
-				772959BF1D73EBAD00A126BF /* FavoriteCell.swift */,
-				772959C11D73ECF300A126BF /* FavoritesViewController.swift */,
 				77B5380B1D6E94C6001682BD /* ContactsVC */,
 				77B5380C1D6E94E3001682BD /* AllChatsVC */,
 				77B5380D1D6E94EE001682BD /* NewChatVC */,
 				77B5380F1D6E9503001682BD /* ChatVC */,
 				772959AF1D71EAA600A126BF /* NewGroupVC */,
 				772959B01D71EAE100A126BF /* NewGroupParticipantsVC */,
+				777548491D75408D00F274E6 /* FavoritesVC */,
 				77B5380E1D6E94FA001682BD /* Protocols */,
+				7775484A1D7540BA00F274E6 /* Data */,
 				77B538101D6E950F001682BD /* Helpers */,
 				77B538111D6E9516001682BD /* Frameworks */,
 				77B538121D6E9573001682BD /* Supporting Files */,
