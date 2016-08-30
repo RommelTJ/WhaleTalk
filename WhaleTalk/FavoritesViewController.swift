@@ -86,6 +86,13 @@ class FavoritesViewController: UIViewController, TableViewFetchedResultsDisplaye
         }).first?.kind
         cell.accessoryType = .DetailButton
     }
+    
+    func deleteAll() {
+        guard let contacts = fetchedResultsController?.fetchedObjects as? [Contact] else { return }
+        for contact in contacts {
+            context?.deleteObject(contact)
+        }
+    }
 
 }
 
