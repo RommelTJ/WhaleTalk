@@ -86,6 +86,9 @@ class ContactImporter: NSObject {
                                 phoneNumber.value = self.formatPhoneNumber(cnPhoneNumber)
                                 phoneNumber.contact = contact
                             }
+                            if contact.inserted {
+                                contact.favorite = true
+                            }
                         })
                         try self.context.save()
                     } catch let error as NSError {
