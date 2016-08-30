@@ -25,6 +25,7 @@
 		7757BAD81D6A0A140040CB74 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7757BAD61D6A0A140040CB74 /* Message.swift */; };
 		7757BAE21D6A3DB50040CB74 /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7757BAE11D6A3DB50040CB74 /* ChatCell.swift */; };
 		7757BAE41D6A40AD0040CB74 /* AllChatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7757BAE31D6A40AD0040CB74 /* AllChatsViewController.swift */; };
+		7775484C1D75413800F274E6 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7775484B1D75413800F274E6 /* SignUpViewController.swift */; };
 		77848C3A1D6D50DB00E155CA /* TableViewFetchedResultsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77848C391D6D50DB00E155CA /* TableViewFetchedResultsDelegate.swift */; };
 		77848C3C1D6D554200E155CA /* UIViewController+FillWithView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77848C3B1D6D554200E155CA /* UIViewController+FillWithView.swift */; };
 		77848C461D6D5A3200E155CA /* ChatCreationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77848C451D6D5A3200E155CA /* ChatCreationDelegate.swift */; };
@@ -62,6 +63,7 @@
 		7757BAD61D6A0A140040CB74 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		7757BAE11D6A3DB50040CB74 /* ChatCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
 		7757BAE31D6A40AD0040CB74 /* AllChatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllChatsViewController.swift; sourceTree = "<group>"; };
+		7775484B1D75413800F274E6 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		77848C391D6D50DB00E155CA /* TableViewFetchedResultsDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewFetchedResultsDelegate.swift; sourceTree = "<group>"; };
 		77848C3B1D6D554200E155CA /* UIViewController+FillWithView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+FillWithView.swift"; sourceTree = "<group>"; };
 		77848C451D6D5A3200E155CA /* ChatCreationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCreationDelegate.swift; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 			isa = PBXGroup;
 			children = (
 				77C659631D62D02200F61AB0 /* AppDelegate.swift */,
+				7775484B1D75413800F274E6 /* SignUpViewController.swift */,
 				77B5380B1D6E94C6001682BD /* ContactsVC */,
 				77B5380C1D6E94E3001682BD /* AllChatsVC */,
 				77B5380D1D6E94EE001682BD /* NewChatVC */,
@@ -328,6 +331,7 @@
 				7757BAD11D69F6320040CB74 /* CDHelper.swift in Sources */,
 				772959AA1D71434900A126BF /* Contact+CoreDataProperties.swift in Sources */,
 				77EE5E2C1D6FE446006549A2 /* Chat+CoreDataProperties.swift in Sources */,
+				7775484C1D75413800F274E6 /* SignUpViewController.swift in Sources */,
 				77EE5E2E1D6FE50F006549A2 /* NewGroupParticipantsViewController.swift in Sources */,
 				772959AD1D71DE0000A126BF /* PhoneNumber+CoreDataProperties.swift in Sources */,
 				77B656991D6BDD1E004AF8F1 /* Contact.swift in Sources */,

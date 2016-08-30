@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return nav
         }
         tabController.viewControllers = vcs
-        window?.rootViewController = tabController
+        window?.rootViewController = SignUpViewController()
         
         return true
     }
