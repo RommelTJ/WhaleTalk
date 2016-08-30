@@ -46,4 +46,10 @@ class Chat: NSManagedObject {
         return nil
     }
     
+    static func new(directWith contact: Contact, inContext context: NSManagedObjectContext) -> Chat {
+        let chat = NSEntityDescription.insertNewObjectForEntityForName("Chat", inManagedObjectContext: context) as! Chat
+        chat.add(participant: contact)
+        return chat
+    }
+    
 }
