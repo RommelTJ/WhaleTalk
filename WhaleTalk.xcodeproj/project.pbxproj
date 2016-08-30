@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7713135E1D75E23D0037FE77 /* RemoteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7713135D1D75E23D0037FE77 /* RemoteStore.swift */; };
 		7714C6D81D69104D0068D85F /* UITableView+Scroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7714C6D71D69104D0068D85F /* UITableView+Scroll.swift */; };
 		772959A81D71408600A126BF /* ContactImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772959A71D71408600A126BF /* ContactImporter.swift */; };
 		772959AA1D71434900A126BF /* Contact+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772959A91D71434900A126BF /* Contact+CoreDataProperties.swift */; };
@@ -45,6 +46,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7713135D1D75E23D0037FE77 /* RemoteStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteStore.swift; sourceTree = "<group>"; };
 		7714C6D71D69104D0068D85F /* UITableView+Scroll.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Scroll.swift"; sourceTree = "<group>"; };
 		772959A71D71408600A126BF /* ContactImporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactImporter.swift; sourceTree = "<group>"; };
 		772959A91D71434900A126BF /* Contact+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Contact+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 			children = (
 				77C659631D62D02200F61AB0 /* AppDelegate.swift */,
 				7775484B1D75413800F274E6 /* SignUpViewController.swift */,
+				7713135D1D75E23D0037FE77 /* RemoteStore.swift */,
 				77B5380B1D6E94C6001682BD /* ContactsVC */,
 				77B5380C1D6E94E3001682BD /* AllChatsVC */,
 				77B5380D1D6E94EE001682BD /* NewChatVC */,
@@ -324,6 +327,7 @@
 				7757BAE21D6A3DB50040CB74 /* ChatCell.swift in Sources */,
 				772959A81D71408600A126BF /* ContactImporter.swift in Sources */,
 				772959B61D73CDB400A126BF /* TableViewFetchedResultsDisplayer.swift in Sources */,
+				7713135E1D75E23D0037FE77 /* RemoteStore.swift in Sources */,
 				772959B21D71EB6D00A126BF /* ContextViewController.swift in Sources */,
 				77848C3A1D6D50DB00E155CA /* TableViewFetchedResultsDelegate.swift in Sources */,
 				7714C6D81D69104D0068D85F /* UITableView+Scroll.swift in Sources */,
