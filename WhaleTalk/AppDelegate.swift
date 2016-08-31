@@ -21,6 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
+        FIRApp.configure()
+        
         let mainContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
         mainContext.persistentStoreCoordinator = CDHelper.sharedInstance.coordinator
         let contactsContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
@@ -52,8 +54,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         tabController.viewControllers = vcs
         window?.rootViewController = SignUpViewController()
-        
-        FIRApp.configure()
         
         return true
     }
