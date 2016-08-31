@@ -10,4 +10,5 @@ import Foundation
 
 protocol RemoteStore {
     func signUp(phoneNumber phoneNumber: String, email: String, password: String, success: ()->(), error: (errorMessage: String)->())
+    func startSyncing()
 }
