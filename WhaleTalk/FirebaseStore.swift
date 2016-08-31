@@ -9,6 +9,7 @@
 import Foundation
 import Firebase
 import FirebaseAuth
+import FirebaseDatabase
 import CoreData
 
 class FirebaseStore {
@@ -54,8 +55,35 @@ extension FirebaseStore: RemoteStore {
         //TODO
     }
     
-    func signUp(phoneNumber phoneNumber: String, email: String, password: String, success: () -> (), error: (errorMessage: String) -> ()) {
-        //TODO
-    }
+    func signUp(phoneNumber phoneNumber: String, email: String, password: String, success: () -> (), error errorCallback: (errorMessage: String) -> ()) {
     
+        FIRAuth.auth()?.createUserWithEmail(email, password: password, completion: {
+            user, error in
+    
+            if error != nil {
+                errorCallback(errorMessage: error!.description)
+            } else {
+                let newUser = [
+                    "phoneNumber": phoneNumber
+                ]
+                self.currentPhoneNumber = phoneNumber
+                
+                let reference = FIRDatabase.database().reference()
+                reference.child("users").child(user!.uid).setValue(newUser)
+                
+                FIRAuth.auth()?.signInWithEmail(email, password: password, completion: {
+    
+                    user, error in
+    
+                    if error != nil {
+                        errorCallback(errorMessage: error!.description)
+                    } else {
+                        success()
+                    }
+                })
+            }
+        })
+            
+    }
+
 }
