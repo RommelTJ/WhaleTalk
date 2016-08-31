@@ -43,6 +43,11 @@ class FirebaseStore {
         
         return authentication
     }
+    
+    private func upload(model: NSManagedObject) {
+        guard let model = model as? FirebaseModel else { return }
+        model.upload(context)
+    }
 }
 
 extension FirebaseStore: RemoteStore {
@@ -52,7 +57,7 @@ extension FirebaseStore: RemoteStore {
     }
     
     func store(inserted inserted: [NSManagedObject], updated: [NSManagedObject], deleted: [NSManagedObject]) {
-        //TODO
+        inserted.forEach(upload)
     }
     
     func signUp(phoneNumber phoneNumber: String, email: String, password: String, success: () -> (), error errorCallback: (errorMessage: String) -> ()) {
