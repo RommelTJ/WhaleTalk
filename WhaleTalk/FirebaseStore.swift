@@ -8,13 +8,13 @@
 
 import Foundation
 import Firebase
-import FirebaseAuth
 import FirebaseDatabase
 import CoreData
 
 class FirebaseStore {
     
     private let context: NSManagedObjectContext
+    var rootRef: FIRDatabaseReference!
     private var currentPhoneNumber: String? {
         set(phoneNumber) {
             NSUserDefaults.standardUserDefaults().setObject(phoneNumber, forKey: "phoneNumber")
@@ -25,20 +25,15 @@ class FirebaseStore {
     }
     
     init(context: NSManagedObjectContext) {
+        rootRef = FIRDatabase.database().reference()
         self.context = context
     }
     
     func hasAuth() -> Bool {
         var authentication = false
         
-        FIRAuth.auth()?.addAuthStateDidChangeListener{ auth, user in
-            if user != nil {
-                //User signed in
-                authentication = true
-            } else {
-                //User not authenticated
-                authentication = false
-            }
+        if FIRAuth.auth()?.currentUser != nil {
+            authentication = true
         }
         
         return authentication
@@ -46,7 +41,7 @@ class FirebaseStore {
     
     private func upload(model: NSManagedObject) {
         guard let model = model as? FirebaseModel else { return }
-        model.upload(context)
+        model.upload(rootRef, context: context)
     }
 }
 
@@ -61,34 +56,28 @@ extension FirebaseStore: RemoteStore {
     }
     
     func signUp(phoneNumber phoneNumber: String, email: String, password: String, success: () -> (), error errorCallback: (errorMessage: String) -> ()) {
-    
-        FIRAuth.auth()?.createUserWithEmail(email, password: password, completion: {
-            user, error in
-    
-            if error != nil {
-                errorCallback(errorMessage: error!.description)
+        
+        FIRAuth.auth()?.createUserWithEmail(email, password: password) { (user, error) in
+            if let error = error {
+                errorCallback(errorMessage: error.localizedDescription)
             } else {
-                let newUser = [
-                    "phoneNumber": phoneNumber
-                ]
+                let newUser = ["phoneNumber": phoneNumber]
                 self.currentPhoneNumber = phoneNumber
+                print("CURRENT NUMBER: \(self.currentPhoneNumber)")
                 
-                let reference = FIRDatabase.database().reference()
-                reference.child("users").child(user!.uid).setValue(newUser)
+                self.rootRef.child("users").child(user!.uid).setValue(newUser)
+                print("SET THE NEW USER")
                 
-                FIRAuth.auth()?.signInWithEmail(email, password: password, completion: {
-    
-                    user, error in
-    
-                    if error != nil {
-                        errorCallback(errorMessage: error!.description)
+                FIRAuth.auth()?.signInWithEmail(email, password: password) { (user, error) in
+                    if let error = error {
+                        errorCallback(errorMessage: error.localizedDescription)
                     } else {
+                        print("SIGNED IN")
                         success()
                     }
-                })
+                } // end signInWithEmail
             }
-        })
-            
-    }
+        } //end createUserWithEmail
+    } // end signUp
 
 }
