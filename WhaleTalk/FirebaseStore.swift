@@ -14,6 +14,14 @@ import CoreData
 class FirebaseStore {
     
     private let context: NSManagedObjectContext
+    private var currentPhoneNumber: String? {
+        set(phoneNumber) {
+            NSUserDefaults.standardUserDefaults().setObject(phoneNumber, forKey: "phoneNumber")
+        }
+        get {
+            return NSUserDefaults.standardUserDefaults().objectForKey("phoneNumber") as? String
+        }
+    }
     
     init(context: NSManagedObjectContext) {
         self.context = context
