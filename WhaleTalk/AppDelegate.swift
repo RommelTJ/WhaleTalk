@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -51,6 +52,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         tabController.viewControllers = vcs
         window?.rootViewController = SignUpViewController()
+        
+        FIRApp.configure()
         
         return true
     }
