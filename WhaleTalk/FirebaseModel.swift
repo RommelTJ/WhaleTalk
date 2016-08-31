@@ -8,7 +8,7 @@
 
 import Foundation
 import Firebase
-import FIRDatabase
+import FirebaseDatabase
 import CoreData
 
 protocol FirebaseModel {
@@ -23,7 +23,17 @@ extension Contact: FirebaseModel {
             let reference = FIRDatabase.database().reference()
             reference.child("users").queryOrderedByChild("phoneNumber").queryEqualToValue(number.value).observeSingleEventOfType(.Value, withBlock: {
                 snapshot in
-                //TODO
+                guard let user = snapshot.value as? NSDictionary else { return }
+                let uid = user.allKeys.first as? String
+                context.performBlock{
+                    self.storageId = uid
+                    number.registered = true
+                    do {
+                        try context.save()
+                    } catch {
+                        print("Error saving")
+                    }
+                }
             })
         }
     }
