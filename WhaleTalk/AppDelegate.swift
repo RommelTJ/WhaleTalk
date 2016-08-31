@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,17 +16,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     private var contactImporter: ContactImporter?
     private var contactsSyncer: Syncer?
+    private var contactsUploadSyncer: Syncer?
+    private var firebaseSyncer: Syncer?
+    private var firebaseStore: FirebaseStore?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        
+        FIRApp.configure()
         
         let mainContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
         mainContext.persistentStoreCoordinator = CDHelper.sharedInstance.coordinator
         let contactsContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         contactsContext.persistentStoreCoordinator = CDHelper.sharedInstance.coordinator
+        let firebaseContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        firebaseContext.persistentStoreCoordinator = CDHelper.sharedInstance.coordinator
+        
         contactsSyncer = Syncer(mainContext: mainContext, backgroundContext: contactsContext)
+        let firebaseStore = FirebaseStore(context: firebaseContext)
+        self.firebaseStore = firebaseStore
+        contactsUploadSyncer = Syncer(mainContext: mainContext, backgroundContext: firebaseContext)
+        contactsUploadSyncer?.remoteStore = firebaseStore
+        firebaseSyncer = Syncer(mainContext: mainContext, backgroundContext: firebaseContext)
+        firebaseSyncer?.remoteStore = firebaseStore
         contactImporter = ContactImporter(context: contactsContext)
-        importContacts(contactsContext)
-        contactImporter?.listenForChanges()
         
         let tabController = UITabBarController()
         let vcData:[(UIViewController, UIImage, String)] = [
@@ -42,8 +55,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             nav.title = title
             return nav
         }
-        tabController.viewControllers = vcs
-        window?.rootViewController = SignUpViewController()
+        
+        if firebaseStore.hasAuth() {
+            firebaseStore.startSyncing()
+            contactImporter?.listenForChanges()
+            tabController.viewControllers = vcs
+            window?.rootViewController = tabController
+        } else {
+            let vc = SignUpViewController()
+            vc.remoteStore = firebaseStore
+            vc.rootViewController = tabController
+            vc.contactImporter = contactImporter
+            window?.rootViewController = vc
+        }
         
         return true
     }

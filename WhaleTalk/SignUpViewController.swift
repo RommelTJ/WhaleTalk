@@ -13,6 +13,9 @@ class SignUpViewController: UIViewController {
     private let phoneNumberField = UITextField()
     private let emailField = UITextField()
     private let passwordField = UITextField()
+    var remoteStore: RemoteStore?
+    var contactImporter: ContactImporter?
+    var rootViewController: UIViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,7 +74,41 @@ class SignUpViewController: UIViewController {
     }
     
     func pressedContinue(sender: UIButton) {
-        //TODO
+        sender.enabled = false
+        guard let phoneNumber = phoneNumberField.text where phoneNumber.characters.count > 0 else {
+            alertForError("Please include your phone number.")
+            sender.enabled = true
+            return
+        }
+        guard let email = emailField.text where email.characters.count > 0 else {
+            alertForError("Please include your email address.")
+            sender.enabled = true
+            return
+        }
+        guard let password = passwordField.text where password.characters.count >= 6 else {
+            alertForError("Password must be at least 6 characters.")
+            sender.enabled = true
+            return
+        }
+        
+        remoteStore?.signUp(phoneNumber: phoneNumber, email: email, password: password, success: {
+            guard let rootVC = self.rootViewController, remoteStore = self.remoteStore, contactImporter = self.contactImporter else { return }
+            remoteStore.startSyncing()
+            contactImporter.fetch()
+            contactImporter.listenForChanges()
+            self.presentViewController(rootVC, animated: true, completion: nil)
+            }, error: {
+                (errorMessage) in
+                self.alertForError(errorMessage)
+                sender.enabled = true
+        })
+    }
+    
+    private func alertForError(error: String) {
+        let alertController = UIAlertController(title: "Error", message: error, preferredStyle: .Alert)
+        let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        alertController.addAction(OKAction)
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
 
 }
