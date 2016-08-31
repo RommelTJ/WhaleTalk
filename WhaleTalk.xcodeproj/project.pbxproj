@@ -34,6 +34,7 @@
 		77855D001D66B2FC002D5C99 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77855CFF1D66B2FC002D5C99 /* MessageCell.swift */; };
 		778AA5B21D7669B700F802BF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 778AA5B11D7669B700F802BF /* GoogleService-Info.plist */; };
 		778AA5B41D766BE900F802BF /* FirebaseStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778AA5B31D766BE900F802BF /* FirebaseStore.swift */; };
+		778AA5B61D767A0100F802BF /* FirebaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778AA5B51D767A0100F802BF /* FirebaseModel.swift */; };
 		77B538031D6E8D42001682BD /* Message+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B538011D6E8D42001682BD /* Message+CoreDataProperties.swift */; };
 		77B656991D6BDD1E004AF8F1 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B656971D6BDD1E004AF8F1 /* Contact.swift */; };
 		77B6569B1D6BE034004AF8F1 /* NewChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B6569A1D6BE034004AF8F1 /* NewChatViewController.swift */; };
@@ -77,6 +78,7 @@
 		77855CFF1D66B2FC002D5C99 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		778AA5B11D7669B700F802BF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		778AA5B31D766BE900F802BF /* FirebaseStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseStore.swift; sourceTree = "<group>"; };
+		778AA5B51D767A0100F802BF /* FirebaseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseModel.swift; sourceTree = "<group>"; };
 		77B538011D6E8D42001682BD /* Message+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		77B656971D6BDD1E004AF8F1 /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		77B6569A1D6BE034004AF8F1 /* NewChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChatViewController.swift; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 				7775484B1D75413800F274E6 /* SignUpViewController.swift */,
 				7713135D1D75E23D0037FE77 /* RemoteStore.swift */,
 				778AA5B31D766BE900F802BF /* FirebaseStore.swift */,
+				778AA5B51D767A0100F802BF /* FirebaseModel.swift */,
 				77B5380B1D6E94C6001682BD /* ContactsVC */,
 				77B5380C1D6E94E3001682BD /* AllChatsVC */,
 				77B5380D1D6E94EE001682BD /* NewChatVC */,
@@ -417,6 +420,7 @@
 				7757BAD11D69F6320040CB74 /* CDHelper.swift in Sources */,
 				772959AA1D71434900A126BF /* Contact+CoreDataProperties.swift in Sources */,
 				77EE5E2C1D6FE446006549A2 /* Chat+CoreDataProperties.swift in Sources */,
+				778AA5B61D767A0100F802BF /* FirebaseModel.swift in Sources */,
 				7775484C1D75413800F274E6 /* SignUpViewController.swift in Sources */,
 				77EE5E2E1D6FE50F006549A2 /* NewGroupParticipantsViewController.swift in Sources */,
 				772959AD1D71DE0000A126BF /* PhoneNumber+CoreDataProperties.swift in Sources */,
