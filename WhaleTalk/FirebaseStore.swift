@@ -35,3 +35,19 @@ class FirebaseStore {
         return authentication
     }
 }
+
+extension FirebaseStore: RemoteStore {
+    
+    func startSyncing() {
+        //TODO
+    }
+    
+    func store(inserted inserted: [NSManagedObject], updated: [NSManagedObject], deleted: [NSManagedObject]) {
+        //TODO
+    }
+    
+    func signUp(phoneNumber phoneNumber: String, email: String, password: String, success: () -> (), error: (errorMessage: String) -> ()) {
+        //TODO
+    }
+    
+}
