@@ -55,12 +55,23 @@ class FirebaseStore {
         return []
     }
     
+    private func observeUserStatus(contact: Contact){
+        contact.observeStatus(rootRef, context: context)
+    }
+    
+    private func observeStatuses(){
+        let contacts = fetchAppContacts()
+        contacts.forEach(observeUserStatus)
+    }
+    
 }
 
 extension FirebaseStore: RemoteStore {
     
     func startSyncing() {
-        //TODO
+        context.performBlock{
+            self.observeStatuses()
+        }
     }
     
     func store(inserted inserted: [NSManagedObject], updated: [NSManagedObject], deleted: [NSManagedObject]) {
