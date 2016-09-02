@@ -40,6 +40,21 @@ extension Contact: FirebaseModel {
         }
     }
     
+    func observeStatus(rootRef:FIRDatabaseReference, context: NSManagedObjectContext) {
+        rootRef.child("users/\(storageId!)/status").observeEventType(.Value, withBlock: {
+            snapshot in
+            guard let status = snapshot.value as? String else{ return }
+            context.performBlock{
+                self.status = status
+                do {
+                    try context.save()
+                } catch {
+                    print("Error saving.")
+                }
+            }
+        })
+    }
+    
 }
 
 extension Chat: FirebaseModel {
