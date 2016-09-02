@@ -15,7 +15,7 @@ class FirebaseStore {
     
     private let context: NSManagedObjectContext
     var rootRef: FIRDatabaseReference!
-    private var currentPhoneNumber: String? {
+    private(set) static var currentPhoneNumber:String? {
         set(phoneNumber) {
             NSUserDefaults.standardUserDefaults().setObject(phoneNumber, forKey: "phoneNumber")
         }
@@ -53,6 +53,11 @@ extension FirebaseStore: RemoteStore {
     
     func store(inserted inserted: [NSManagedObject], updated: [NSManagedObject], deleted: [NSManagedObject]) {
         inserted.forEach(upload)
+        do {
+            try context.save()
+        } catch {
+            print("Error saving")
+        }
     }
     
     func signUp(phoneNumber phoneNumber: String, email: String, password: String, success: () -> (), error errorCallback: (errorMessage: String) -> ()) {
@@ -62,17 +67,14 @@ extension FirebaseStore: RemoteStore {
                 errorCallback(errorMessage: error.localizedDescription)
             } else {
                 let newUser = ["phoneNumber": phoneNumber]
-                self.currentPhoneNumber = phoneNumber
-                print("CURRENT NUMBER: \(self.currentPhoneNumber)")
+                FirebaseStore.currentPhoneNumber = phoneNumber
                 
                 self.rootRef.child("users").child(user!.uid).setValue(newUser)
-                print("SET THE NEW USER")
                 
                 FIRAuth.auth()?.signInWithEmail(email, password: password) { (user, error) in
                     if let error = error {
                         errorCallback(errorMessage: error.localizedDescription)
                     } else {
-                        print("SIGNED IN")
                         success()
                     }
                 } // end signInWithEmail

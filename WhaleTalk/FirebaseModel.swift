@@ -18,34 +18,18 @@ protocol FirebaseModel {
 extension Contact: FirebaseModel {
     
     func upload(rootRef: FIRDatabaseReference, context: NSManagedObjectContext) {
-        print("Upload")
         guard let phoneNumbers = phoneNumbers?.allObjects as? [PhoneNumber] else { return }
         for number in phoneNumbers {
             let userID = FIRAuth.auth()?.currentUser?.uid
-            print("Upload:: USERID: \(userID)")
             rootRef.child("users").child(userID!).queryOrderedByChild("phoneNumber").queryEqualToValue(number.value).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 
-                print("Checking for user.")
-                
-                guard let user = snapshot.value as? NSDictionary else {
-                    print("We failed in guard for upload")
-                    return
-                }
-                print("We got a user")
-                print(user)
-                print("\(user.allKeys)")
-                print("\(user.allKeys.first)")
-                
+                guard let user = snapshot.value as? NSDictionary else { return }
                 let uid = user.allKeys.first as? String
-                print("\(uid)")
-                
                 context.performBlock {
                     self.storageId = uid
                     number.registered = true
                     do {
-                        print("Saving to CoreData")
                         try context.save()
-                        print("Save.")
                     } catch {
                         print("Error saving")
                     }
@@ -56,4 +40,36 @@ extension Contact: FirebaseModel {
         }
     }
     
+}
+
+extension Chat: FirebaseModel {
+    
+    func upload(rootRef: FIRDatabaseReference, context: NSManagedObjectContext) {
+        guard storageId == nil else { return }
+        
+        let ref = rootRef.child("chats").childByAutoId()
+        storageId = ref.key
+        var data: [String: AnyObject] = [
+            "id": ref.key,
+        ]
+        
+        guard let participants = participants?.allObjects as? [Contact] else { return }
+        var numbers = [FirebaseStore.currentPhoneNumber!: true]
+        var userIds = [FIRAuth.auth()?.currentUser?.uid]
+        
+        for participant in participants {
+            guard let phoneNumbers = participant.phoneNumbers?.allObjects as? [PhoneNumber] else { continue }
+            guard let number = phoneNumbers.filter({$0.registered}).first else { continue }
+            numbers[number.value!] = true
+            userIds.append(participant.storageId!)
+        }
+        data["participants"] = numbers
+        if let name = name {
+            data["name"] = name
+        }
+        ref.setValue(["meta": data])
+        for id in userIds {
+            rootRef.child("users/\(id)/chats/\(ref.key)").setValue(true)
+        }
+    }
 }
