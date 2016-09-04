@@ -17,6 +17,26 @@ protocol FirebaseModel {
 
 extension Contact: FirebaseModel {
     
+    static func existing(withPhoneNumber phoneNumber: String, rootRef: FIRDatabaseReference!, inContext context: NSManagedObjectContext)-> Contact? {
+        let request = NSFetchRequest(entityName: "PhoneNumber")
+        request.predicate = NSPredicate(format: "value=%@", phoneNumber)
+        
+        do {
+            if let results = try context.executeFetchRequest(request) as? [PhoneNumber]
+                where results.count > 0 {
+                let contact = results.first!.contact!
+                if contact.storageId == nil {
+                    contact.getContactId(context, phoneNumber: phoneNumber, rootRef: rootRef)
+                }
+                return contact
+            }
+        } catch {
+            print("Error fetching")
+        }
+        
+        return nil
+    }
+    
     func getContactId(context: NSManagedObjectContext, phoneNumber: String, rootRef: FIRDatabaseReference!) {
         rootRef.child("users").queryOrderedByChild("phoneNumber").queryEqualToValue(phoneNumber).observeSingleEventOfType(.Value, withBlock: {
             (snapshot) in
