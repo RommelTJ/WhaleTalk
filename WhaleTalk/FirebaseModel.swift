@@ -106,6 +106,38 @@ extension Contact: FirebaseModel {
 
 extension Chat: FirebaseModel {
     
+    static func new(forStorageId storageId:String, rootRef: FIRDatabaseReference!, inContext context: NSManagedObjectContext) -> Chat {
+        let chat = NSEntityDescription.insertNewObjectForEntityForName("Chat", inManagedObjectContext: context) as! Chat
+        chat.storageId = storageId
+        
+        rootRef.child("chats\(storageId)/meta").observeSingleEventOfType(.Value, withBlock: {
+            snapshot in
+            guard let data = snapshot.value as? NSDictionary else { return }
+            guard let participantsDict = data["participants"] as? NSMutableDictionary else { return }
+            
+            participantsDict.removeObjectForKey(FirebaseStore.currentPhoneNumber!)
+            let participants = participantsDict.allKeys.map{
+                (phoneNumber: AnyObject) -> Contact in
+                let phoneNumber = phoneNumber as! String
+                return Contact.existing(withPhoneNumber: phoneNumber, rootRef: rootRef, inContext: context) ?? Contact.new(forPhoneNumber: phoneNumber, rootRef: rootRef, inContext: context)
+            }
+            
+            let name = data["name"] as? String
+            context.performBlock{
+                chat.participants = NSSet(array: participants)
+                chat.name = name
+                do {
+                    try context.save()
+                } catch {
+                    print("Error saving.")
+                }
+            }
+        })
+        
+        return chat
+    }
+    
+    
     static func existing(storageId storageId: String, inContext context: NSManagedObjectContext) -> Chat? {
         let request = NSFetchRequest(entityName: "Chat")
         request.predicate = NSPredicate(format: "storageId=%@", storageId)
