@@ -106,6 +106,23 @@ extension Contact: FirebaseModel {
 
 extension Chat: FirebaseModel {
     
+    static func existing(storageId storageId: String, inContext context: NSManagedObjectContext) -> Chat? {
+        let request = NSFetchRequest(entityName: "Chat")
+        request.predicate = NSPredicate(format: "storageId=%@", storageId)
+        
+        do {
+            if let results = try context.executeFetchRequest(request) as? [Chat] where results.count > 0 {
+                if let chat = results.first{
+                    return chat
+                }
+            }
+        } catch {
+            print("Error Fetching")
+        }
+        
+        return nil
+    }
+    
     func upload(rootRef: FIRDatabaseReference!, context: NSManagedObjectContext) {
         guard storageId == nil else { return }
         
