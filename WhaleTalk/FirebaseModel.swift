@@ -17,6 +17,18 @@ protocol FirebaseModel {
 
 extension Contact: FirebaseModel {
     
+    static func new(forPhoneNumber phoneNumberVal: String, rootRef: FIRDatabaseReference!, inContext context: NSManagedObjectContext)-> Contact {
+        let contact = NSEntityDescription.insertNewObjectForEntityForName("Contact", inManagedObjectContext: context) as! Contact
+        let phoneNumber = NSEntityDescription.insertNewObjectForEntityForName("PhoneNumber", inManagedObjectContext: context) as! PhoneNumber
+        
+        phoneNumber.contact = contact
+        phoneNumber.registered = true
+        phoneNumber.value = phoneNumberVal
+        contact.getContactId(context, phoneNumber: phoneNumberVal, rootRef: rootRef)
+        
+        return contact
+    }
+    
     static func existing(withPhoneNumber phoneNumber: String, rootRef: FIRDatabaseReference!, inContext context: NSManagedObjectContext)-> Contact? {
         let request = NSFetchRequest(entityName: "PhoneNumber")
         request.predicate = NSPredicate(format: "value=%@", phoneNumber)
