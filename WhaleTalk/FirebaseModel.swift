@@ -12,12 +12,12 @@ import FirebaseDatabase
 import CoreData
 
 protocol FirebaseModel {
-    func upload(rootRef: FIRDatabaseReference, context: NSManagedObjectContext)
+    func upload(rootRef: FIRDatabaseReference!, context: NSManagedObjectContext)
 }
 
 extension Contact: FirebaseModel {
     
-    func upload(rootRef: FIRDatabaseReference, context: NSManagedObjectContext) {
+    func upload(rootRef: FIRDatabaseReference!, context: NSManagedObjectContext) {
         guard let phoneNumbers = phoneNumbers?.allObjects as? [PhoneNumber] else { return }
         for number in phoneNumbers {
             let userID = FIRAuth.auth()?.currentUser?.uid
@@ -34,13 +34,11 @@ extension Contact: FirebaseModel {
                         print("Error saving")
                     }
                 }
-            }) { (error) in
-                print(error.localizedDescription)
-            }
+            })
         }
     }
     
-    func observeStatus(rootRef:FIRDatabaseReference, context: NSManagedObjectContext) {
+    func observeStatus(rootRef: FIRDatabaseReference!, context: NSManagedObjectContext) {
         rootRef.child("users/\(storageId!)/status").observeEventType(.Value, withBlock: {
             snapshot in
             guard let status = snapshot.value as? String else{ return }
@@ -59,7 +57,7 @@ extension Contact: FirebaseModel {
 
 extension Chat: FirebaseModel {
     
-    func upload(rootRef: FIRDatabaseReference, context: NSManagedObjectContext) {
+    func upload(rootRef: FIRDatabaseReference!, context: NSManagedObjectContext) {
         guard storageId == nil else { return }
         
         let ref = rootRef.child("chats").childByAutoId()
@@ -91,7 +89,7 @@ extension Chat: FirebaseModel {
 
 extension Message: FirebaseModel {
     
-    func upload(rootRef: FIRDatabaseReference, context: NSManagedObjectContext) {
+    func upload(rootRef: FIRDatabaseReference!, context: NSManagedObjectContext) {
         if chat?.storageId == nil {
             chat?.upload(rootRef, context: context)
         }
@@ -99,7 +97,7 @@ extension Message: FirebaseModel {
             "message" : text!,
             "sender" : FirebaseStore.currentPhoneNumber!
         ]
-        guard let chat = chat, timestamp = timestamp, storageId = chat.storageId else {return}
+        guard let chat = chat, timestamp = timestamp, storageId = chat.storageId else { return }
         let timeInterval = String(Int(timestamp.timeIntervalSince1970 * 100000))
         rootRef.child("chats/\(storageId)/messages/\(timeInterval)").setValue(data)
     }
