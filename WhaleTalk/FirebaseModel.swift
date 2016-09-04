@@ -82,6 +82,7 @@ extension Contact: FirebaseModel {
                     } catch {
                         print("Error saving")
                     }
+                    self.observeStatus(rootRef, context: context)
                 }
             })
         }
