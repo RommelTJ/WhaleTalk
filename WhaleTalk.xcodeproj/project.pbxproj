@@ -48,6 +48,7 @@
 		77EE5E2C1D6FE446006549A2 /* Chat+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EE5E2B1D6FE446006549A2 /* Chat+CoreDataProperties.swift */; };
 		77EE5E2E1D6FE50F006549A2 /* NewGroupParticipantsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EE5E2D1D6FE50F006549A2 /* NewGroupParticipantsViewController.swift */; };
 		77FB68621D7E26E0004C8676 /* Chat+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FB68611D7E26E0004C8676 /* Chat+Firebase.swift */; };
+		77FB68641D7E2733004C8676 /* Contact+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FB68631D7E2733004C8676 /* Contact+Firebase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -95,6 +96,7 @@
 		77EE5E2B1D6FE446006549A2 /* Chat+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Chat+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		77EE5E2D1D6FE50F006549A2 /* NewGroupParticipantsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGroupParticipantsViewController.swift; sourceTree = "<group>"; };
 		77FB68611D7E26E0004C8676 /* Chat+Firebase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Chat+Firebase.swift"; sourceTree = "<group>"; };
+		77FB68631D7E2733004C8676 /* Contact+Firebase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Contact+Firebase.swift"; sourceTree = "<group>"; };
 		D531E82A8940AF029D43918E /* libPods-WhaleTalk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WhaleTalk.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -272,6 +274,7 @@
 				7713135D1D75E23D0037FE77 /* RemoteStore.swift */,
 				778AA5B31D766BE900F802BF /* FirebaseStore.swift */,
 				778AA5B51D767A0100F802BF /* FirebaseModel.swift */,
+				77FB68631D7E2733004C8676 /* Contact+Firebase.swift */,
 				77FB68611D7E26E0004C8676 /* Chat+Firebase.swift */,
 				77B5380B1D6E94C6001682BD /* ContactsVC */,
 				77B5380C1D6E94E3001682BD /* AllChatsVC */,
@@ -417,6 +420,7 @@
 				772959B61D73CDB400A126BF /* TableViewFetchedResultsDisplayer.swift in Sources */,
 				7713135E1D75E23D0037FE77 /* RemoteStore.swift in Sources */,
 				772959B21D71EB6D00A126BF /* ContextViewController.swift in Sources */,
+				77FB68641D7E2733004C8676 /* Contact+Firebase.swift in Sources */,
 				77848C3A1D6D50DB00E155CA /* TableViewFetchedResultsDelegate.swift in Sources */,
 				77FB68621D7E26E0004C8676 /* Chat+Firebase.swift in Sources */,
 				7714C6D81D69104D0068D85F /* UITableView+Scroll.swift in Sources */,
