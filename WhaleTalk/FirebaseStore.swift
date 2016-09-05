@@ -9,6 +9,7 @@
 import Foundation
 import Firebase
 import FirebaseDatabase
+import FirebaseAuth
 import CoreData
 
 class FirebaseStore {
@@ -44,6 +45,10 @@ class FirebaseStore {
         model.upload(rootRef, context: context)
     }
     
+    private func listenForNewMessages(chat: Chat) {
+        chat.observeMessages(rootRef, context: context)
+    }
+    
     private func fetchAppContacts()->[Contact]{
         do {
             let request = NSFetchRequest(entityName: "Contact")
@@ -76,6 +81,7 @@ class FirebaseStore {
                     print("Error saving.")
                 }
             }
+            self.listenForNewMessages(chat)
         })
     }
     

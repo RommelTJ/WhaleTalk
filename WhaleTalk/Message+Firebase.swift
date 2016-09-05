@@ -14,8 +14,8 @@ import FirebaseDatabase
 extension Message: FirebaseModel {
     
     func upload(rootRef: FIRDatabaseReference!, context: NSManagedObjectContext) {
-        if chat?.storageId == nil {
-            chat?.upload(rootRef, context: context)
+        if chat!.storageId == nil {
+            chat!.upload(rootRef, context: context)
         }
         let data = [
             "message" : text!,
