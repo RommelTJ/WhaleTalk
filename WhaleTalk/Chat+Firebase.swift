@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 import Firebase
 import FirebaseDatabase
+import FirebaseAuth
 
 extension Chat: FirebaseModel {
     
@@ -65,6 +66,7 @@ extension Chat: FirebaseModel {
                 } catch {
                     print("Error saving.")
                 }
+                chat.observeMessages(rootRef, context: context)
             }
         })
         
@@ -74,7 +76,7 @@ extension Chat: FirebaseModel {
     
     static func existing(storageId storageId: String, inContext context: NSManagedObjectContext) -> Chat? {
         let request = NSFetchRequest(entityName: "Chat")
-        request.predicate = NSPredicate(format: "storageId=%@", storageId)
+        request.predicate = NSPredicate(format: "storageId==%@", storageId)
         
         do {
             if let results = try context.executeFetchRequest(request) as? [Chat] where results.count > 0 {
@@ -114,7 +116,7 @@ extension Chat: FirebaseModel {
         }
         ref.setValue(["meta": data])
         for id in userIds {
-            rootRef.child("users/\(id)/chats/\(ref.key)").setValue(true)
+            rootRef.child("users/\(id!)/chats/\(ref.key)").setValue(true)
         }
     }
 }

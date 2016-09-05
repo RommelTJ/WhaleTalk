@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 import Firebase
 import FirebaseDatabase
+import FirebaseAuth
 
 extension Contact: FirebaseModel {
     
@@ -27,7 +28,7 @@ extension Contact: FirebaseModel {
     
     static func existing(withPhoneNumber phoneNumber: String, rootRef: FIRDatabaseReference!, inContext context: NSManagedObjectContext)-> Contact? {
         let request = NSFetchRequest(entityName: "PhoneNumber")
-        request.predicate = NSPredicate(format: "value=%@", phoneNumber)
+        request.predicate = NSPredicate(format: "value==%@", phoneNumber)
         
         do {
             if let results = try context.executeFetchRequest(request) as? [PhoneNumber]
@@ -50,7 +51,7 @@ extension Contact: FirebaseModel {
             (snapshot) in
             guard let user = snapshot.value as? NSDictionary else { return }
             
-            let uid = user.allKeys.first as? String
+            let uid = user.allKeys.first as! String
             context.performBlock({
                 self.storageId = uid
                 do {
@@ -85,8 +86,9 @@ extension Contact: FirebaseModel {
     }
     
     func observeStatus(rootRef: FIRDatabaseReference!, context: NSManagedObjectContext) {
-        rootRef.child("users/\(storageId!)/status").observeEventType(.Value, withBlock: {
-            snapshot in
+        let userID = FIRAuth.auth()?.currentUser?.uid
+        rootRef.child("users/\(storageId!)/status").child(userID!).observeEventType(.Value, withBlock: {
+            (snapshot) in
             guard let status = snapshot.value as? String else{ return }
             context.performBlock{
                 self.status = status
