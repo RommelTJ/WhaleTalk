@@ -49,6 +49,7 @@
 		77EE5E2E1D6FE50F006549A2 /* NewGroupParticipantsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EE5E2D1D6FE50F006549A2 /* NewGroupParticipantsViewController.swift */; };
 		77FB68621D7E26E0004C8676 /* Chat+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FB68611D7E26E0004C8676 /* Chat+Firebase.swift */; };
 		77FB68641D7E2733004C8676 /* Contact+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FB68631D7E2733004C8676 /* Contact+Firebase.swift */; };
+		77FB68661D7E2775004C8676 /* Message+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FB68651D7E2775004C8676 /* Message+Firebase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -97,6 +98,7 @@
 		77EE5E2D1D6FE50F006549A2 /* NewGroupParticipantsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGroupParticipantsViewController.swift; sourceTree = "<group>"; };
 		77FB68611D7E26E0004C8676 /* Chat+Firebase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Chat+Firebase.swift"; sourceTree = "<group>"; };
 		77FB68631D7E2733004C8676 /* Contact+Firebase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Contact+Firebase.swift"; sourceTree = "<group>"; };
+		77FB68651D7E2775004C8676 /* Message+Firebase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+Firebase.swift"; sourceTree = "<group>"; };
 		D531E82A8940AF029D43918E /* libPods-WhaleTalk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WhaleTalk.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -274,6 +276,7 @@
 				7713135D1D75E23D0037FE77 /* RemoteStore.swift */,
 				778AA5B31D766BE900F802BF /* FirebaseStore.swift */,
 				778AA5B51D767A0100F802BF /* FirebaseModel.swift */,
+				77FB68651D7E2775004C8676 /* Message+Firebase.swift */,
 				77FB68631D7E2733004C8676 /* Contact+Firebase.swift */,
 				77FB68611D7E26E0004C8676 /* Chat+Firebase.swift */,
 				77B5380B1D6E94C6001682BD /* ContactsVC */,
@@ -417,6 +420,7 @@
 			files = (
 				7757BAE21D6A3DB50040CB74 /* ChatCell.swift in Sources */,
 				772959A81D71408600A126BF /* ContactImporter.swift in Sources */,
+				77FB68661D7E2775004C8676 /* Message+Firebase.swift in Sources */,
 				772959B61D73CDB400A126BF /* TableViewFetchedResultsDisplayer.swift in Sources */,
 				7713135E1D75E23D0037FE77 /* RemoteStore.swift in Sources */,
 				772959B21D71EB6D00A126BF /* ContextViewController.swift in Sources */,
