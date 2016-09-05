@@ -10,7 +10,35 @@ import Foundation
 import CoreData
 import Firebase
 import FirebaseDatabase
+
 extension Chat: FirebaseModel {
+    
+    func observeMessages(rootRef: FIRDatabaseReference!, context: NSManagedObjectContext) {
+        guard let storageId = storageId else { return }
+        let lastFetch = lastMessage?.timestamp?.timeIntervalSince1970 ?? 0
+        
+        rootRef.child("chats/\(storageId)/messages").queryOrderedByKey().queryStartingAtValue(String(lastFetch * 100000)).observeEventType(.ChildAdded, withBlock: {
+            snapshot in
+            context.performBlock({ 
+                guard let phoneNumber = snapshot.value!["sender"] as? String where phoneNumber != FirebaseStore.currentPhoneNumber else { return }
+                guard let text = snapshot.value!["message"] as? String else { return }
+                guard let timeInterval = Double(snapshot.key) else { return }
+                let date = NSDate(timeIntervalSince1970: timeInterval/100000)
+                
+                guard let message = NSEntityDescription.insertNewObjectForEntityForName("Message", inManagedObjectContext: context) as? Message else { return }
+                message.text = text
+                message.timestamp = date
+                message.sender = Contact.existing(withPhoneNumber: phoneNumber, rootRef: rootRef, inContext: context) ?? Contact.new(forPhoneNumber: phoneNumber, rootRef: rootRef, inContext: context)
+                message.chat = self
+                self.lastMessageTime = message.timestamp
+                do {
+                    try context.save()
+                } catch {
+                    print("Error saving")
+                }
+            })
+        })
+    }
     
     static func new(forStorageId storageId:String, rootRef: FIRDatabaseReference!, inContext context: NSManagedObjectContext) -> Chat {
         let chat = NSEntityDescription.insertNewObjectForEntityForName("Chat", inManagedObjectContext: context) as! Chat
