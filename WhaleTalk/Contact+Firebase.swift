@@ -15,13 +15,13 @@ import FirebaseAuth
 extension Contact: FirebaseModel {
     
     static func new(forPhoneNumber phoneNumberVal: String, rootRef: FIRDatabaseReference!, inContext context: NSManagedObjectContext)-> Contact {
-        let contact = NSEntityDescription.insertNewObjectForEntityForName("Contact", inManagedObjectContext: context) as! Contact
-        let phoneNumber = NSEntityDescription.insertNewObjectForEntityForName("PhoneNumber", inManagedObjectContext: context) as! PhoneNumber
+        let contact = NSEntityDescription.insertNewObject(forEntityName: "Contact", into: context) as! Contact
+        let phoneNumber = NSEntityDescription.insertNewObject(forEntityName: "PhoneNumber", into: context) as! PhoneNumber
         
         phoneNumber.contact = contact
         phoneNumber.registered = true
         phoneNumber.value = phoneNumberVal
-        contact.getContactId(context, phoneNumber: phoneNumberVal, rootRef: rootRef)
+        contact.getContactId(context: context, phoneNumber: phoneNumberVal, rootRef: rootRef)
         
         return contact
     }
@@ -31,8 +31,7 @@ extension Contact: FirebaseModel {
         request.predicate = NSPredicate(format: "value==%@", phoneNumber)
         
         do {
-            if let results = try context.executeFetchRequest(request) as? [PhoneNumber]
-                where results.count > 0 {
+            if let results = try context.executeFetchRequest(request) as? [PhoneNumber], results.count > 0 {
                 let contact = results.first!.contact!
                 if contact.storageId == nil {
                     contact.getContactId(context, phoneNumber: phoneNumber, rootRef: rootRef)
@@ -47,12 +46,12 @@ extension Contact: FirebaseModel {
     }
     
     func getContactId(context: NSManagedObjectContext, phoneNumber: String, rootRef: FIRDatabaseReference!) {
-        rootRef.child("users").queryOrderedByChild("phoneNumber").queryEqualToValue(phoneNumber).observeSingleEventOfType(.Value, withBlock: {
+        rootRef.child("users").queryOrdered(byChild: "phoneNumber").queryEqual(toValue: phoneNumber).observeSingleEvent(of: .value, with: {
             (snapshot) in
             guard let user = snapshot.value as? NSDictionary else { return }
             
             let uid = user.allKeys.first as! String
-            context.performBlock({
+            context.perform({
                 self.storageId = uid
                 do {
                     try context.save()
@@ -67,11 +66,11 @@ extension Contact: FirebaseModel {
         guard let phoneNumbers = phoneNumbers?.allObjects as? [PhoneNumber] else { return }
         for number in phoneNumbers {
             let userID = FIRAuth.auth()?.currentUser?.uid
-            rootRef.child("users").child(userID!).queryOrderedByChild("phoneNumber").queryEqualToValue(number.value).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            rootRef.child("users").child(userID!).queryOrdered(byChild: "phoneNumber").queryEqual(toValue: number.value).observeSingleEvent(of: .value, with: { (snapshot) in
                 
                 guard let user = snapshot.value as? NSDictionary else { return }
                 let uid = user.allKeys.first as? String
-                context.performBlock {
+                context.perform {
                     self.storageId = uid
                     number.registered = true
                     do {
@@ -79,7 +78,7 @@ extension Contact: FirebaseModel {
                     } catch {
                         print("Error saving")
                     }
-                    self.observeStatus(rootRef, context: context)
+                    self.observeStatus(rootRef: rootRef, context: context)
                 }
             })
         }
@@ -87,10 +86,10 @@ extension Contact: FirebaseModel {
     
     func observeStatus(rootRef: FIRDatabaseReference!, context: NSManagedObjectContext) {
         let userID = FIRAuth.auth()?.currentUser?.uid
-        rootRef.child("users/\(storageId!)/status").child(userID!).observeEventType(.Value, withBlock: {
+        rootRef.child("users/\(storageId!)/status").child(userID!).observe(.value, with: {
             (snapshot) in
             guard let status = snapshot.value as? String else{ return }
-            context.performBlock{
+            context.perform{
                 self.status = status
                 do {
                     try context.save()

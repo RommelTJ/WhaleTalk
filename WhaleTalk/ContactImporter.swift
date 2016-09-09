@@ -20,13 +20,13 @@ class ContactImporter: NSObject {
     }
     
     func listenForChanges() {
-        CNContactStore.authorizationStatusForEntityType(.Contacts)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ContactImporter.addressBookDidChange(_:)), name: CNContactStoreDidChangeNotification, object: nil)
+        CNContactStore.authorizationStatus(for: .contacts)
+        NotificationCenter.defaultCenter.addObserver(self, selector: #selector(ContactImporter.addressBookDidChange(_:)), name: CNContactStoreDidChangeNotification, object: nil)
     }
     
     func addressBookDidChange(notification: NSNotification) {
         let now = NSDate()
-        guard lastCNNotificationTime == nil || now.timeIntervalSinceDate(lastCNNotificationTime!) > 1 else { return }
+        guard lastCNNotificationTime == nil || now.timeIntervalSince(lastCNNotificationTime! as Date) > 1 else { return }
         lastCNNotificationTime = now
         fetch()	
     }
@@ -61,20 +61,20 @@ class ContactImporter: NSObject {
     
     func fetch() {
         let store = CNContactStore()
-        store.requestAccessForEntityType(.Contacts) { (granted, error) in
+        store.requestAccess(for: .contacts) { (granted, error) in
             
-            self.context.performBlock({ 
+            self.context.perform({ 
                 if granted {
                     do {
                         let (contacts, phoneNumbers) = self.fetchExisting()
                         
                         let req = CNContactFetchRequest(keysToFetch: [
-                            CNContactGivenNameKey,
-                            CNContactFamilyNameKey,
-                            CNContactPhoneNumbersKey
+                            CNContactGivenNameKey as CNKeyDescriptor,
+                            CNContactFamilyNameKey as CNKeyDescriptor,
+                            CNContactPhoneNumbersKey as CNKeyDescriptor
                             ])
-                        try store.enumerateContactsWithFetchRequest(req, usingBlock: { (cnContact, stop) in
-                            guard let contact = contacts[cnContact.identifier] ?? NSEntityDescription.insertNewObjectForEntityForName("Contact", inManagedObjectContext: self.context) as? Contact else { return }
+                        try store.enumerateContacts(with: req, usingBlock: { (cnContact, stop) in
+                            guard let contact = contacts[cnContact.identifier] ?? NSEntityDescription.insertNewObject(forEntityName: "Contact", into: self.context) as? Contact else { return }
                             
                             contact.firstName = cnContact.givenName
                             contact.lastName = cnContact.familyName
@@ -82,12 +82,12 @@ class ContactImporter: NSObject {
 
                             for cnVal in cnContact.phoneNumbers {
                                 guard let cnPhoneNumber = cnVal.value as? CNPhoneNumber else { continue }
-                                guard let phoneNumber = phoneNumbers[cnPhoneNumber.stringValue] ?? NSEntityDescription.insertNewObjectForEntityForName("PhoneNumber", inManagedObjectContext: self.context) as? PhoneNumber else { continue }
-                                phoneNumber.kind = CNLabeledValue.localizedStringForLabel(cnVal.label)
-                                phoneNumber.value = self.formatPhoneNumber(cnPhoneNumber)
+                                guard let phoneNumber = phoneNumbers[cnPhoneNumber.stringValue] ?? NSEntityDescription.insertNewObject(forEntityName: "PhoneNumber", into: self.context) as? PhoneNumber else { continue }
+                                phoneNumber.kind = CNLabeledValue.localizedString(forLabel: cnVal.label!)
+                                phoneNumber.value = self.formatPhoneNumber(number: cnPhoneNumber)
                                 phoneNumber.contact = contact
                             }
-                            if contact.inserted {
+                            if contact.isInserted {
                                 contact.favorite = true
                             }
                         })

@@ -19,38 +19,38 @@ class TableViewFetchedResultsDelegate: NSObject, NSFetchedResultsControllerDeleg
         self.displayer = displayer
     }
     
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    func controllerWillChangeContent(controller: NSFetchedResultsController<AnyObject>) {
         tableView.beginUpdates()
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+    func controller(controller: NSFetchedResultsController<AnyObject>, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
         switch type {
-        case .Insert:
-            tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
-        case .Delete:
-            tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+        case .insert:
+            tableView.insertSections(NSIndexSet(index: sectionIndex) as IndexSet, with: .fade)
+        case .delete:
+            tableView.deleteSections(NSIndexSet(index: sectionIndex) as IndexSet, with: .fade)
         default:
             break
         }
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    func controller(controller: NSFetchedResultsController<AnyObject>, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         switch type {
-        case .Insert:
-            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-        case .Update:
-            let cell = tableView.cellForRowAtIndexPath(indexPath!)
-            displayer.configureCell(cell!, atIndexPath: indexPath!)
-            tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-        case .Move:
-            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-        case .Delete:
-            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+        case .insert:
+            tableView.insertRows(at: [newIndexPath! as IndexPath], with: .fade)
+        case .update:
+            let cell = tableView.cellForRow(at: indexPath! as IndexPath)
+            displayer.configureCell(cell: cell!, atIndexPath: indexPath!)
+            tableView.reloadRows(at: [indexPath! as IndexPath], with: .fade)
+        case .move:
+            tableView.deleteRows(at: [indexPath! as IndexPath], with: .fade)
+            tableView.insertRows(at: [newIndexPath! as IndexPath], with: .fade)
+        case .delete:
+            tableView.deleteRows(at: [indexPath! as IndexPath], with: .fade)
         }
     }
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    func controllerDidChangeContent(controller: NSFetchedResultsController<AnyObject>) {
         tableView.endUpdates()
     }
     

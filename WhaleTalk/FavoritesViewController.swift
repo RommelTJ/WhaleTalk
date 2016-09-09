@@ -14,9 +14,9 @@ import ContactsUI
 class FavoritesViewController: UIViewController, TableViewFetchedResultsDisplayer, ContextViewController {
     
     var context: NSManagedObjectContext?
-    private var fetchedResultsController: NSFetchedResultsController?
+    private var fetchedResultsController: NSFetchedResultsController<AnyObject>?
     private var fetchedResultsDelegate: NSFetchedResultsControllerDelegate?
-    private let tableView = UITableView(frame: CGRectZero, style: .Plain)
+    private let tableView = UITableView(frame: CGRectZero, style: .plain)
     private let cellIdentifier = "FavoriteCell"
     private let store = CNContactStore()
 
@@ -25,14 +25,14 @@ class FavoritesViewController: UIViewController, TableViewFetchedResultsDisplaye
 
         title = "Favorites"
         
-        navigationItem.leftBarButtonItem = editButtonItem()
+        navigationItem.leftBarButtonItem = editButtonItem
         
         automaticallyAdjustsScrollViewInsets = false
-        tableView.registerClass(FavoriteCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.register(FavoriteCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.tableFooterView = UIView(frame: CGRectZero)
         tableView.dataSource = self
         tableView.delegate = self
-        fillViewWith(tableView)
+        fillViewWith(subView: tableView)
         
         if let context = context {
             let request = NSFetchRequest(entityName: "Contact")
@@ -59,15 +59,15 @@ class FavoritesViewController: UIViewController, TableViewFetchedResultsDisplaye
         // Dispose of any resources that can be recreated.
     }
     
-    override func setEditing(editing: Bool, animated: Bool) {
+    override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         if editing {
             tableView.setEditing(true, animated: true)
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Delete All", style: .Plain, target: self, action: #selector(FavoritesViewController.deleteAll))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Delete All", style: .plain, target: self, action: #selector(FavoritesViewController.deleteAll))
         } else {
             tableView.setEditing(false, animated: true)
             navigationItem.rightBarButtonItem = nil
-            guard let context = context where context.hasChanges else { return }
+            guard let context = context , context.hasChanges else { return }
             do {
                 try context.save()
             } catch {
@@ -85,7 +85,7 @@ class FavoritesViewController: UIViewController, TableViewFetchedResultsDisplaye
             number in guard let number = number as? PhoneNumber else { return false }
             return number.registered
         }).first?.kind
-        cell.accessoryType = .DetailButton
+        cell.accessoryType = .detailButton
     }
     
     func deleteAll() {
@@ -103,13 +103,13 @@ extension FavoritesViewController: UITableViewDataSource {
         return fetchedResultsController?.sections?.count ?? 0
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let sections = fetchedResultsController?.sections else { return 0 }
         let currentSection = sections[section]
         return currentSection.numberOfObjects
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)
         configureCell(cell, atIndexPath: indexPath)
         return cell
@@ -131,8 +131,8 @@ extension FavoritesViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         guard let contact = fetchedResultsController?.objectAtIndexPath(indexPath) as? Contact else { return }
-        let chatContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        chatContext.parentContext = context
+        let chatContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        chatContext.parent = context
         
         let chat = Chat.existing(directWith: contact, inContext: chatContext) ?? Chat.new(directWith: contact, inContext: chatContext)
         
@@ -153,7 +153,7 @@ extension FavoritesViewController: UITableViewDelegate {
         } catch {
             return
         }
-        let vc = CNContactViewController(forContact: cnContact)
+        let vc = CNContactViewController(for: cnContact)
         vc.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(vc, animated: true)
     }

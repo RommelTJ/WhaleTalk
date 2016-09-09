@@ -18,15 +18,15 @@ extension Chat: FirebaseModel {
         guard let storageId = storageId else { return }
         let lastFetch = lastMessage?.timestamp?.timeIntervalSince1970 ?? 0
         
-        rootRef.child("chats/\(storageId)/messages").queryOrderedByKey().queryStartingAtValue(String(lastFetch * 100000)).observeEventType(.ChildAdded, withBlock: {
+        rootRef.child("chats/\(storageId)/messages").queryOrderedByKey().queryStarting(atValue: String(lastFetch * 100000)).observe(.childAdded, with: {
             snapshot in
-            context.performBlock({ 
-                guard let phoneNumber = snapshot.value!["sender"] as? String where phoneNumber != FirebaseStore.currentPhoneNumber else { return }
+            context.perform({ 
+                guard let phoneNumber = snapshot.value!["sender"] as? String, phoneNumber != FirebaseStore.currentPhoneNumber else { return }
                 guard let text = snapshot.value!["message"] as? String else { return }
                 guard let timeInterval = Double(snapshot.key) else { return }
                 let date = NSDate(timeIntervalSince1970: timeInterval/100000)
                 
-                guard let message = NSEntityDescription.insertNewObjectForEntityForName("Message", inManagedObjectContext: context) as? Message else { return }
+                guard let message = NSEntityDescription.insertNewObject(forEntityName: "Message", into: context) as? Message else { return }
                 message.text = text
                 message.timestamp = date
                 message.sender = Contact.existing(withPhoneNumber: phoneNumber, rootRef: rootRef, inContext: context) ?? Contact.new(forPhoneNumber: phoneNumber, rootRef: rootRef, inContext: context)
@@ -42,15 +42,15 @@ extension Chat: FirebaseModel {
     }
     
     static func new(forStorageId storageId:String, rootRef: FIRDatabaseReference!, inContext context: NSManagedObjectContext) -> Chat {
-        let chat = NSEntityDescription.insertNewObjectForEntityForName("Chat", inManagedObjectContext: context) as! Chat
+        let chat = NSEntityDescription.insertNewObject(forEntityName: "Chat", into: context) as! Chat
         chat.storageId = storageId
         
-        rootRef.child("chats\(storageId)/meta").observeSingleEventOfType(.Value, withBlock: {
+        rootRef.child("chats\(storageId)/meta").observeSingleEvent(of: .value, with: {
             snapshot in
             guard let data = snapshot.value as? NSDictionary else { return }
             guard let participantsDict = data["participants"] as? NSMutableDictionary else { return }
             
-            participantsDict.removeObjectForKey(FirebaseStore.currentPhoneNumber!)
+            participantsDict.removeObject(forKey: FirebaseStore.currentPhoneNumber!)
             let participants = participantsDict.allKeys.map{
                 (phoneNumber: AnyObject) -> Contact in
                 let phoneNumber = phoneNumber as! String
@@ -58,7 +58,7 @@ extension Chat: FirebaseModel {
             }
             
             let name = data["name"] as? String
-            context.performBlock{
+            context.perform{
                 chat.participants = NSSet(array: participants)
                 chat.name = name
                 do {
@@ -66,7 +66,7 @@ extension Chat: FirebaseModel {
                 } catch {
                     print("Error saving.")
                 }
-                chat.observeMessages(rootRef, context: context)
+                chat.observeMessages(rootRef: rootRef, context: context)
             }
         })
         
@@ -79,7 +79,7 @@ extension Chat: FirebaseModel {
         request.predicate = NSPredicate(format: "storageId==%@", storageId)
         
         do {
-            if let results = try context.executeFetchRequest(request) as? [Chat] where results.count > 0 {
+            if let results = try context.executeFetchRequest(request) as? [Chat], results.count > 0 {
                 if let chat = results.first{
                     return chat
                 }
@@ -97,7 +97,7 @@ extension Chat: FirebaseModel {
         let ref = rootRef.child("chats").childByAutoId()
         storageId = ref.key
         var data: [String: AnyObject] = [
-            "id": ref.key,
+            "id": ref.key as AnyObject,
             ]
         
         guard let participants = participants?.allObjects as? [Contact] else { return }
@@ -110,9 +110,9 @@ extension Chat: FirebaseModel {
             numbers[number.value!] = true
             userIds.append(participant.storageId!)
         }
-        data["participants"] = numbers
+        data["participants"] = numbers as AnyObject?
         if let name = name {
-            data["name"] = name
+            data["name"] = name as AnyObject?
         }
         ref.setValue(["meta": data])
         for id in userIds {

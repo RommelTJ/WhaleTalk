@@ -15,13 +15,13 @@ extension Message: FirebaseModel {
     
     func upload(rootRef: FIRDatabaseReference!, context: NSManagedObjectContext) {
         if chat!.storageId == nil {
-            chat!.upload(rootRef, context: context)
+            chat!.upload(rootRef: rootRef, context: context)
         }
         let data = [
             "message" : text!,
             "sender" : FirebaseStore.currentPhoneNumber!
         ]
-        guard let chat = chat, timestamp = timestamp, storageId = chat.storageId else { return }
+        guard let chat = chat, let timestamp = timestamp, let storageId = chat.storageId else { return }
         let timeInterval = String(Int(timestamp.timeIntervalSince1970 * 100000))
         rootRef.child("chats/\(storageId)/messages/\(timeInterval)").setValue(data)
     }

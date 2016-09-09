@@ -20,20 +20,20 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor.whiteColor()
+        view.backgroundColor = UIColor.white
         
         let label = UILabel()
         label.text = "Sign up with WhaleTalk"
-        label.font = UIFont.systemFontOfSize(24)
+        label.font = UIFont.systemFont(ofSize: 24)
         view.addSubview(label)
         
         let continueButton = UIButton()
-        continueButton.setTitle("Continue", forState: .Normal)
-        continueButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        continueButton.addTarget(self, action: #selector(SignUpViewController.pressedContinue(_:)), forControlEvents: .TouchUpInside)
+        continueButton.setTitle("Continue", for: .normal)
+        continueButton.setTitleColor(UIColor.black, for: .normal)
+        continueButton.addTarget(self, action: #selector(SignUpViewController.pressedContinue(_:)), for: .TouchUpInside)
         view.addSubview(continueButton)
         
-        phoneNumberField.keyboardType = .PhonePad
+        phoneNumberField.keyboardType = .phonePad
         label.translatesAutoresizingMaskIntoConstraints = false
         continueButton.translatesAutoresizingMaskIntoConstraints = false
         
@@ -49,22 +49,22 @@ class SignUpViewController: UIViewController {
         passwordField.secureTextEntry = true
         
         let stackView = UIStackView(arrangedSubviews: fields.map{$0.0})
-        stackView.axis = .Vertical
-        stackView.alignment = .Fill
+        stackView.axis = .vertical
+        stackView.alignment = .fill
         stackView.spacing = 20
         view.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         let constraints: [NSLayoutConstraint] = [
-            label.topAnchor.constraintEqualToAnchor(topLayoutGuide.bottomAnchor, constant: 20),
-            label.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor),
-            stackView.topAnchor.constraintEqualToAnchor(label.bottomAnchor, constant: 20),
-            stackView.leadingAnchor.constraintEqualToAnchor(view.layoutMarginsGuide.leadingAnchor),
-            stackView.trailingAnchor.constraintEqualToAnchor(view.layoutMarginsGuide.trailingAnchor),
-            continueButton.topAnchor.constraintEqualToAnchor(stackView.bottomAnchor, constant: 20),
-            continueButton.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor)
+            label.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: 20),
+            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stackView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 20),
+            stackView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            continueButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 20),
+            continueButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ]
-        NSLayoutConstraint.activateConstraints(constraints)
+        NSLayoutConstraint.activate(constraints)
         phoneNumberField.becomeFirstResponder()
     }
 
@@ -74,41 +74,41 @@ class SignUpViewController: UIViewController {
     }
     
     func pressedContinue(sender: UIButton) {
-        sender.enabled = false
-        guard let phoneNumber = phoneNumberField.text where phoneNumber.characters.count > 0 else {
-            alertForError("Please include your phone number.")
-            sender.enabled = true
+        sender.isEnabled = false
+        guard let phoneNumber = phoneNumberField.text , phoneNumber.characters.count > 0 else {
+            alertForError(error: "Please include your phone number.")
+            sender.isEnabled = true
             return
         }
-        guard let email = emailField.text where email.characters.count > 0 else {
-            alertForError("Please include your email address.")
-            sender.enabled = true
+        guard let email = emailField.text, email.characters.count > 0 else {
+            alertForError(error: "Please include your email address.")
+            sender.isEnabled = true
             return
         }
-        guard let password = passwordField.text where password.characters.count >= 6 else {
-            alertForError("Password must be at least 6 characters.")
-            sender.enabled = true
+        guard let password = passwordField.text, password.characters.count >= 6 else {
+            alertForError(error: "Password must be at least 6 characters.")
+            sender.isEnabled = true
             return
         }
         
         remoteStore?.signUp(phoneNumber: phoneNumber, email: email, password: password, success: {
-            guard let rootVC = self.rootViewController, remoteStore = self.remoteStore, contactImporter = self.contactImporter else { return }
+            guard let rootVC = self.rootViewController, let remoteStore = self.remoteStore, let contactImporter = self.contactImporter else { return }
             remoteStore.startSyncing()
             contactImporter.fetch()
             contactImporter.listenForChanges()
-            self.presentViewController(rootVC, animated: true, completion: nil)
+            self.present(rootVC, animated: true, completion: nil)
             }, error: {
                 (errorMessage) in
-                self.alertForError(errorMessage)
-                sender.enabled = true
+                self.alertForError(error: errorMessage)
+                sender.isEnabled = true
         })
     }
     
     private func alertForError(error: String) {
-        let alertController = UIAlertController(title: "Error", message: error, preferredStyle: .Alert)
-        let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        let alertController = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
+        let OKAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(OKAction)
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
 
 }

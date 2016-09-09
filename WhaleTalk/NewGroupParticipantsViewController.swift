@@ -15,7 +15,7 @@ class NewGroupParticipantsViewController: UIViewController {
     var chat: Chat?
     var chatCreationDelegate: ChatCreationDelegate?
     private var searchField: UITextField!
-    private let tableView = UITableView(frame: CGRectZero, style: .Plain)
+    private let tableView = UITableView(frame: CGRectZero, style: .plain)
     private let cellIdentifier = "ContactCell"
     private var displayedContacts = [Contact]()
     private var allContacts = [Contact]()
@@ -27,18 +27,18 @@ class NewGroupParticipantsViewController: UIViewController {
         
         title = "Add Participants"
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Create", style: .Plain, target: self, action: #selector(NewGroupParticipantsViewController.createChat))
-        showCreateButton(false)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Create", style: .plain, target: self, action: #selector(NewGroupParticipantsViewController.createChat))
+        showCreateButton(show: false)
         
         automaticallyAdjustsScrollViewInsets = false
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.tableFooterView = UIView(frame: CGRectZero)
         searchField = createSearchField()
         searchField.delegate = self
         tableView.tableHeaderView = searchField
-        fillViewWith(tableView)
+        fillViewWith(subView: tableView)
         
         if let context = context {
             let request = NSFetchRequest(entityName: "Contact")
@@ -66,22 +66,22 @@ class NewGroupParticipantsViewController: UIViewController {
         
         let holderView = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         searchField.leftView = holderView
-        searchField.leftViewMode = .Always
+        searchField.leftViewMode = .always
         
-        let image = UIImage(named: "contact_icon")?.imageWithRenderingMode(.AlwaysTemplate)
+        let image = UIImage(named: "contact_icon")?.withRenderingMode(.alwaysTemplate)
         let contactImage = UIImageView(image: image)
-        contactImage.tintColor = UIColor.darkGrayColor()
+        contactImage.tintColor = UIColor.darkGray
         
         holderView.addSubview(contactImage)
         contactImage.translatesAutoresizingMaskIntoConstraints = false
         
         let constraints: [NSLayoutConstraint] = [
-            contactImage.widthAnchor.constraintEqualToAnchor(holderView.widthAnchor, constant: -20),
-            contactImage.heightAnchor.constraintEqualToAnchor(holderView.heightAnchor, constant: -20),
-            contactImage.centerXAnchor.constraintEqualToAnchor(holderView.centerXAnchor),
-            contactImage.centerYAnchor.constraintEqualToAnchor(holderView.centerYAnchor)
+            contactImage.widthAnchor.constraint(equalTo: holderView.widthAnchor, constant: -20),
+            contactImage.heightAnchor.constraint(equalTo: holderView.heightAnchor, constant: -20),
+            contactImage.centerXAnchor.constraint(equalTo: holderView.centerXAnchor),
+            contactImage.centerYAnchor.constraint(equalTo: holderView.centerYAnchor)
         ]
-        NSLayoutConstraint.activateConstraints(constraints)
+        NSLayoutConstraint.activate(constraints)
         
         return searchField
     }
@@ -89,10 +89,10 @@ class NewGroupParticipantsViewController: UIViewController {
     private func showCreateButton(show: Bool) {
         if show {
             navigationItem.rightBarButtonItem?.tintColor = view.tintColor
-            navigationItem.rightBarButtonItem?.enabled = true
+            navigationItem.rightBarButtonItem?.isEnabled = true
         } else {
-            navigationItem.rightBarButtonItem?.tintColor = UIColor.lightGrayColor()
-            navigationItem.rightBarButtonItem?.enabled = false
+            navigationItem.rightBarButtonItem?.tintColor = UIColor.lightGray
+            navigationItem.rightBarButtonItem?.isEnabled = false
         }
     }
     
@@ -103,21 +103,21 @@ class NewGroupParticipantsViewController: UIViewController {
     }
     
     func createChat() {
-        guard let chat = chat, context = context else { return }
+        guard let chat = chat, let context = context else { return }
         chat.participants = NSSet(array: selectedContacts)
         chatCreationDelegate?.created(chat: chat, inContext: context)
-        dismissViewControllerAnimated(false, completion: nil)
+        dismiss(animated: false, completion: nil)
     }
 
 }
 
 extension NewGroupParticipantsViewController: UITableViewDataSource {
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return displayedContacts.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)
         let contact = displayedContacts[indexPath.row]
         cell.textLabel?.text = contact.fullName
@@ -155,7 +155,7 @@ extension NewGroupParticipantsViewController: UITextFieldDelegate {
             return true
         }
         
-        let text = NSString(string: currentText).stringByReplacingCharactersInRange(range, withString: string)
+        let text = NSString(string: currentText).replacingCharacters(in: range, with: string)
         if text.characters.count == 0 {
             endSearch()
             return true

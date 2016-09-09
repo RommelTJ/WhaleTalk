@@ -12,8 +12,8 @@ import CoreData
 class AllChatsViewController: UIViewController, TableViewFetchedResultsDisplayer, ChatCreationDelegate, ContextViewController {
     
     var context: NSManagedObjectContext?
-    private var fetchedResultsController: NSFetchedResultsController?
-    private let tableView = UITableView(frame: CGRectZero, style: .Plain)
+    private var fetchedResultsController: NSFetchedResultsController<AnyObject>?
+    private let tableView = UITableView(frame: CGRectZero, style: .plain)
     private let cellIdentifier = "MessageCell"
     private var fetchedResultsDelegate: NSFetchedResultsControllerDelegate?
 
@@ -21,15 +21,15 @@ class AllChatsViewController: UIViewController, TableViewFetchedResultsDisplayer
         super.viewDidLoad()
 
         title = "Chats"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "new-chat"), style: .Plain, target: self, action: #selector(AllChatsViewController.newChat))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "new-chat"), style: .plain, target: self, action: #selector(AllChatsViewController.newChat))
         automaticallyAdjustsScrollViewInsets = false
         
-        tableView.registerClass(ChatCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.register(ChatCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.tableFooterView = UIView(frame: CGRectZero)
         tableView.tableHeaderView = createHeader()
         tableView.dataSource = self
         tableView.delegate = self
-        fillViewWith(tableView)
+        fillViewWith(subView: tableView)
         
         if let context = context {
             let request = NSFetchRequest(entityName: "Chat")
@@ -53,17 +53,17 @@ class AllChatsViewController: UIViewController, TableViewFetchedResultsDisplayer
     
     func newChat() {
         let vc = NewChatViewController()
-        let chatContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        chatContext.parentContext = context
+        let chatContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        chatContext.parent = context
         vc.context = chatContext
         vc.chatCreationDelegate = self
         let navVC = UINavigationController(rootViewController: vc)
-        presentViewController(navVC, animated: true, completion: nil)
+        present(navVC, animated: true, completion: nil)
     }
     
     func fakeData() {
         guard let context = context else { return }
-        let _ = NSEntityDescription.insertNewObjectForEntityForName("Chat", inManagedObjectContext: context) as? Chat
+        let _ = NSEntityDescription.insertNewObject(forEntityName: "Chat", into: context) as? Chat
         //let chat = NSEntityDescription.insertNewObjectForEntityForName("Chat", inManagedObjectContext: context) as? Chat
     }
     
@@ -71,9 +71,9 @@ class AllChatsViewController: UIViewController, TableViewFetchedResultsDisplayer
         let cell = cell as! ChatCell
         guard let chat = fetchedResultsController?.objectAtIndexPath(indexPath) as? Chat else { return }
         guard let contact = chat.participants?.anyObject() as? Contact else { return }
-        guard let lastMessage = chat.lastMessage, timestamp = lastMessage.timestamp, text = lastMessage.text else { return }
+        guard let lastMessage = chat.lastMessage, let timestamp = lastMessage.timestamp, let text = lastMessage.text else { return }
         
-        let formatter = NSDateFormatter()
+        let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/YY"
         cell.nameLabel.text = contact.fullName
         cell.dateLabel.text = formatter.stringFromDate(timestamp)
@@ -96,30 +96,30 @@ class AllChatsViewController: UIViewController, TableViewFetchedResultsDisplayer
         newGroupButton.translatesAutoresizingMaskIntoConstraints = false
         header.addSubview(newGroupButton)
         
-        newGroupButton.setTitle("New Group", forState: .Normal)
-        newGroupButton.setTitleColor(view.tintColor, forState: .Normal)
-        newGroupButton.addTarget(self, action: #selector(AllChatsViewController.pressedNewGroup), forControlEvents: .TouchUpInside)
+        newGroupButton.setTitle("New Group", for: .normal)
+        newGroupButton.setTitleColor(view.tintColor, for: .normal)
+        newGroupButton.addTarget(self, action: #selector(AllChatsViewController.pressedNewGroup), for: .touchUpInside)
         
         let border = UIView()
         border.translatesAutoresizingMaskIntoConstraints = false
         header.addSubview(border)
         
-        border.backgroundColor = UIColor.lightGrayColor()
+        border.backgroundColor = UIColor.lightGray
         
         //Constraints
         let constraints: [NSLayoutConstraint] = [
-            newGroupButton.heightAnchor.constraintEqualToAnchor(header.heightAnchor),
-            newGroupButton.trailingAnchor.constraintEqualToAnchor(header.layoutMarginsGuide.trailingAnchor),
-            border.heightAnchor.constraintEqualToConstant(1),
-            border.leadingAnchor.constraintEqualToAnchor(header.leadingAnchor),
-            border.trailingAnchor.constraintEqualToAnchor(header.trailingAnchor),
-            border.bottomAnchor.constraintEqualToAnchor(header.bottomAnchor)
+            newGroupButton.heightAnchor.constraint(equalTo: header.heightAnchor),
+            newGroupButton.trailingAnchor.constraint(equalTo: header.layoutMarginsGuide.trailingAnchor),
+            border.heightAnchor.constraint(equalToConstant: 1),
+            border.leadingAnchor.constraint(equalTo: header.leadingAnchor),
+            border.trailingAnchor.constraint(equalTo: header.trailingAnchor),
+            border.bottomAnchor.constraint(equalTo: header.bottomAnchor)
         ]
-        NSLayoutConstraint.activateConstraints(constraints)
+        NSLayoutConstraint.activate(constraints)
         
         header.setNeedsLayout()
         header.layoutIfNeeded()
-        let height = header.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
+        let height = header.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
         var frame = header.frame
         frame.size.height = height
         header.frame = frame
@@ -129,12 +129,12 @@ class AllChatsViewController: UIViewController, TableViewFetchedResultsDisplayer
     
     func pressedNewGroup() {
         let vc = NewGroupViewController()
-        let chatContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        chatContext.parentContext = context
+        let chatContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        chatContext.parent = context
         vc.context = chatContext
         vc.chatCreationDelegate = self
         let navVC = UINavigationController(rootViewController: vc)
-        presentViewController(navVC, animated: true, completion: nil)
+        present(navVC, animated: true, completion: nil)
     }
 }
 
@@ -143,13 +143,13 @@ extension AllChatsViewController: UITableViewDataSource {
         return fetchedResultsController?.sections?.count ?? 0
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let sections = fetchedResultsController?.sections else { return 0 }
         let currentSection = sections[section]
         return currentSection.numberOfObjects
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)
         configureCell(cell, atIndexPath: indexPath)
         return cell
@@ -172,6 +172,6 @@ extension AllChatsViewController: UITableViewDelegate {
         vc.chat = chat
         vc.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(vc, animated: true)
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
 }

@@ -18,10 +18,10 @@ class FirebaseStore {
     var rootRef: FIRDatabaseReference!
     private(set) static var currentPhoneNumber:String? {
         set(phoneNumber) {
-            NSUserDefaults.standardUserDefaults().setObject(phoneNumber, forKey: "phoneNumber")
+            UserDefaults.standard.set(phoneNumber, forKey: "phoneNumber")
         }
         get {
-            return NSUserDefaults.standardUserDefaults().objectForKey("phoneNumber") as? String
+            return UserDefaults.standard.object(forKey: "phoneNumber") as? String
         }
     }
     
@@ -42,11 +42,11 @@ class FirebaseStore {
     
     private func upload(model: NSManagedObject) {
         guard let model = model as? FirebaseModel else { return }
-        model.upload(rootRef, context: context)
+        model.upload(rootRef: rootRef, context: context)
     }
     
     private func listenForNewMessages(chat: Chat) {
-        chat.observeMessages(rootRef, context: context)
+        chat.observeMessages(rootRef: rootRef, context: context)
     }
     
     private func fetchAppContacts()->[Contact]{
@@ -61,7 +61,7 @@ class FirebaseStore {
     }
     
     private func observeUserStatus(contact: Contact){
-        contact.observeStatus(rootRef, context: context)
+        contact.observeStatus(rootRef: rootRef, context: context)
     }
     
     private func observeStatuses(){
@@ -70,18 +70,18 @@ class FirebaseStore {
     }
     
     private func observeChats() {
-        self.rootRef.child("users/\(FIRAuth.auth()?.currentUser?.uid)/chats").observeEventType(.ChildAdded, withBlock: {
+        self.rootRef.child("users/\(FIRAuth.auth()?.currentUser?.uid)/chats").observe(.childAdded, with: {
             snapshot in
             let uid = snapshot.key
             let chat = Chat.existing(storageId: uid, inContext: self.context) ?? Chat.new(forStorageId: uid, rootRef: self.rootRef, inContext: self.context)
-            if chat.inserted {
+            if chat.isInserted {
                 do {
                     try self.context.save()
                 } catch {
                     print("Error saving.")
                 }
             }
-            self.listenForNewMessages(chat)
+            self.listenForNewMessages(chat: chat)
         })
     }
     
@@ -105,20 +105,20 @@ extension FirebaseStore: RemoteStore {
         }
     }
     
-    func signUp(phoneNumber phoneNumber: String, email: String, password: String, success: () -> (), error errorCallback: (errorMessage: String) -> ()) {
+    func signUp(phoneNumber phoneNumber: String, email: String, password: String, success: @escaping () -> (), error errorCallback: @escaping (_ errorMessage: String) -> ()) {
         
-        FIRAuth.auth()?.createUserWithEmail(email, password: password) { (user, error) in
+        FIRAuth.auth()?.createUser(withEmail: email, password: password) { (user, error) in
             if let error = error {
-                errorCallback(errorMessage: error.localizedDescription)
+                errorCallback(error.localizedDescription)
             } else {
                 let newUser = ["phoneNumber": phoneNumber]
                 FirebaseStore.currentPhoneNumber = phoneNumber
                 
                 self.rootRef.child("users").child(user!.uid).setValue(newUser)
                 
-                FIRAuth.auth()?.signInWithEmail(email, password: password) { (user, error) in
+                FIRAuth.auth()?.signIn(withEmail: email, password: password) { (user, error) in
                     if let error = error {
-                        errorCallback(errorMessage: error.localizedDescription)
+                        errorCallback(error.localizedDescription)
                     } else {
                         success()
                     }

@@ -21,9 +21,9 @@ class NewGroupViewController: UIViewController {
 
         title = "New Group"
         
-        view.backgroundColor = UIColor.whiteColor()
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .Plain, target: self, action: #selector(NewGroupViewController.cancel))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .Plain, target: self, action: #selector(NewGroupViewController.next))
+        view.backgroundColor = UIColor.white
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(NewGroupViewController.cancel))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(getter: NewGroupViewController.next))
         updateNextButton(forCharCount: 0)
         
         subjectField.placeholder = "Group Subject"
@@ -32,28 +32,28 @@ class NewGroupViewController: UIViewController {
         view.addSubview(subjectField)
         updateCharacterLabel(forCharCount: 0)
         
-        characterNumberLabel.textColor = UIColor.grayColor()
+        characterNumberLabel.textColor = UIColor.gray
         characterNumberLabel.translatesAutoresizingMaskIntoConstraints = false
         subjectField.addSubview(characterNumberLabel)
         
         let bottomBorder = UIView()
-        bottomBorder.backgroundColor = UIColor.lightGrayColor()
+        bottomBorder.backgroundColor = UIColor.lightGray
         bottomBorder.translatesAutoresizingMaskIntoConstraints = false
         subjectField.addSubview(bottomBorder)
         
         //Auto-layout Constraints
         let constraints: [NSLayoutConstraint] = [
-            subjectField.topAnchor.constraintEqualToAnchor(topLayoutGuide.bottomAnchor, constant: 20),
-            subjectField.leadingAnchor.constraintEqualToAnchor(view.layoutMarginsGuide.leadingAnchor),
-            subjectField.trailingAnchor.constraintEqualToAnchor(view.trailingAnchor),
-            bottomBorder.widthAnchor.constraintEqualToAnchor(subjectField.widthAnchor),
-            bottomBorder.bottomAnchor.constraintEqualToAnchor(subjectField.bottomAnchor),
-            bottomBorder.leadingAnchor.constraintEqualToAnchor(subjectField.leadingAnchor),
-            bottomBorder.heightAnchor.constraintEqualToConstant(1),
-            characterNumberLabel.centerYAnchor.constraintEqualToAnchor(subjectField.centerYAnchor),
-            characterNumberLabel.trailingAnchor.constraintEqualToAnchor(subjectField.layoutMarginsGuide.trailingAnchor)
+            subjectField.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: 20),
+            subjectField.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            subjectField.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bottomBorder.widthAnchor.constraint(equalTo: subjectField.widthAnchor),
+            bottomBorder.bottomAnchor.constraint(equalTo: subjectField.bottomAnchor),
+            bottomBorder.leadingAnchor.constraint(equalTo: subjectField.leadingAnchor),
+            bottomBorder.heightAnchor.constraint(equalToConstant: 1),
+            characterNumberLabel.centerYAnchor.constraint(equalTo: subjectField.centerYAnchor),
+            characterNumberLabel.trailingAnchor.constraint(equalTo: subjectField.layoutMarginsGuide.trailingAnchor)
         ]
-        NSLayoutConstraint.activateConstraints(constraints)
+        NSLayoutConstraint.activate(constraints)
         
     }
 
@@ -63,11 +63,11 @@ class NewGroupViewController: UIViewController {
     }
     
     func cancel() {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     func next() {
-        guard let context = context, chat = NSEntityDescription.insertNewObjectForEntityForName("Chat", inManagedObjectContext: context) as? Chat else { return }
+        guard let context = context, let chat = NSEntityDescription.insertNewObject(forEntityName: "Chat", into: context) as? Chat else { return }
         chat.name = subjectField.text
         
         let vc = NewGroupParticipantsViewController()
@@ -83,11 +83,11 @@ class NewGroupViewController: UIViewController {
     
     func updateNextButton(forCharCount length: Int) {
         if length == 0 {
-            navigationItem.rightBarButtonItem?.tintColor = UIColor.lightGrayColor()
-            navigationItem.rightBarButtonItem?.enabled = false
+            navigationItem.rightBarButtonItem?.tintColor = UIColor.lightGray
+            navigationItem.rightBarButtonItem?.isEnabled = false
         } else {
             navigationItem.rightBarButtonItem?.tintColor = view.tintColor
-            navigationItem.rightBarButtonItem?.enabled = true
+            navigationItem.rightBarButtonItem?.isEnabled = true
         }
     }
 
